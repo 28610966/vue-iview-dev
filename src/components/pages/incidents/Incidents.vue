@@ -4,35 +4,59 @@
             <Col span="19">
                 <Row>
                     <Col>
-                        <Alert style="height:80px"> haha</Alert>
+                        <Alert>
+                            <Row>
+                                <Col span="12">
+                                <div style="height: 100;text-align: center; border-right:1px solid #e9eaec;">
+                                    <p>Your open incidents</p>
+                                    <p><h2> 1 triggered    0 acknowledged</h2></p>
+                                </div>
+                                </Col>
+                                <Col span="12">
+                                <div style="height: 100;text-align: center;">
+                                    <p>All open incidents</p>
+                                    <p><h2>1 triggered    0 acknowledged</h2></p>
+                                </div>
+                                </Col>
+                            </Row>
+                        </Alert>
                     </Col>
                     <Col span="24">
                         <Card style="width: 100%">
                             <Row type="flex">
                                 <Col span="12">
                                 <ButtonGroup>
-                                    <Button type="success">Open</Button>
-                                    <Button>Triggered</Button>
-                                    <Button>Acknowledged</Button>
-                                    <Button>Resolved</Button>
-                                    <Button>Any Status</Button>
+                                    <Button @click="status = 1" :type="status ===1 ?'primary':''">Open</Button>
+                                    <Button @click="status = 2" :type="status ===2 ?'info':''">Triggered</Button>
+                                    <Button @click="status = 3" :type="status ===3 ?'warning':''">Acknowledged</Button>
+                                    <Button @click="status = 4" :type="status ===4 ?'error':''">Resolved</Button>
+                                    <Button @click="status = 5" :type="status ===5 ?'success':''">Any Status</Button>
                                 </ButtonGroup>
                                 </Col>
                                 <Col span="12" style="text-align:right;">
                                 <ButtonGroup>
-                                    <Button>Assigend to me</Button>
-                                    <Button type="success">All</Button>
+                                    <Button @click="assigendToMe = true" :type="assigendToMe ?'success':''">Assigend to me</Button>
+                                    <Button @click="assigendToMe = false" :type="!assigendToMe ?'success':''">All</Button>
                                 </ButtonGroup>
                                 </Col>
                                 <Col span="24">
                                     <Row>
                                         <Col span="12" style="padding: 0px;">
-                                        <ButtonGroup>
-                                            <Button>Acknowledge</Button>
-                                            <Button>Reassign</Button>
-                                            <Button icon="ok">Resolve</Button>
-                                            <Button icon="clock">Snooze</Button>
-                                        </ButtonGroup>
+                                            <Button :disabled="selectRow">Acknowledge</Button>
+                                            <Button :disabled="selectRow">Reassign</Button>
+                                            <Button :disabled="selectRow" icon="ok">Resolve</Button>
+                                            <Dropdown placement="bottom-end" >
+                                                <Button :disabled="selectRow" icon="clock">Snooze <Icon type="arrow-down-b"></Icon></Button>
+
+                                                <Dropdown-menu slot="list" v-if="!selectRow">
+                                                    <Dropdown-item>1 hours</Dropdown-item>
+                                                    <Dropdown-item>4 hours</Dropdown-item>
+                                                    <Dropdown-item>8 hours</Dropdown-item>
+                                                    <Dropdown-item>24 hours</Dropdown-item>
+                                                    <Dropdown-item>others</Dropdown-item>
+                                                </Dropdown-menu>
+                                            </Dropdown>
+                                        <Button v-if="!selectRow" icon="ok">Merge Incidents</Button>
                                         </Col>
                                         <Col span="12" style="text-align: right;padding: 0px;">
                                         <Page :total="Incidents.list.data.total" :current="Incidents.list.data.current" size="small"
@@ -42,18 +66,26 @@
                                     </Row>
                                 </Col>
                                 <Col span="24">
-                                        <Table size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
+                                        <Table @on-selection-change="selectionChange" size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
                                 </Col>
                                 <Col span="24">
 
                                     <Row>
                                         <Col span="12" style="padding: 0px;">
-                                            <ButtonGroup>
-                                                <Button>Acknowledge</Button>
-                                                <Button>Reassign</Button>
-                                                <Button icon="ok">Resolve</Button>
-                                                <Button icon="clock">Snooze</Button>
-                                            </ButtonGroup>
+                                                <Button :disabled="selectRow">Acknowledge</Button>
+                                                <Button :disabled="selectRow">Reassign</Button>
+                                                <Button :disabled="selectRow" icon="ok">Resolve</Button>
+                                                <Dropdown placement="bottom-end">
+                                                    <Button :disabled="selectRow" icon="clock">Snooze <Icon type="arrow-down-b"></Icon></Button>
+                                                    <Dropdown-menu slot="list" v-if="!selectRow">
+                                                        <Dropdown-item>1 hours</Dropdown-item>
+                                                        <Dropdown-item>4 hours</Dropdown-item>
+                                                        <Dropdown-item>8 hours</Dropdown-item>
+                                                        <Dropdown-item>24 hours</Dropdown-item>
+                                                        <Dropdown-item>others</Dropdown-item>
+                                                    </Dropdown-menu>
+                                                </Dropdown>
+                                            <Button v-if="!selectRow" icon="ok">Merge Incidents</Button>
                                         </Col>
                                         <Col span="12" style="text-align: right;padding: 0px;">
                                         <Page :total="Incidents.list.data.total" :current="Incidents.list.data.current" size="small"
@@ -75,7 +107,7 @@
             <Col span="5">
                 <Row>
                     <Col span="24">
-                        <Button type="success" icon="plus" style="width:100%"  @click="openModal">New Incident</Button>
+                        <Button type="success" icon="plus" style="width:100%;text-align: left;"  @click="openModal">New Incident</Button>
                     </Col>
                     <Col span="24">
                         <Card style="margin: 5px 0px;">
@@ -104,11 +136,11 @@
                 </Row>
             </Col>
         </Row>
-        <Modal width="800px" v-model="modal" :title="modalTitle"
+        <Modal width="600px" v-model="modal" :title="modalTitle"
                :loading="loading"
                @on-ok="saveIncidents"
         >
-            <DynamicForm :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
                 <Button type="primary" size="large" :loading="loading" @click="saveIncidents">提交</Button>
@@ -118,12 +150,12 @@
 </template>
 
 <script>
-    import {DynamicForm, DynamicQueryForm} from '../../common';
+    import {DynamicForm, DynamicQueryForm, DropMenuDecorator} from '../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../libs';
 
     export default{
-        components: {DynamicForm, DynamicQueryForm},
+        components: {DynamicForm, DynamicQueryForm, DropMenuDecorator},
         computed: {
             ...VueUtil(this).select(['Incidents','Services']).state(),
         },
@@ -131,6 +163,9 @@
             ...VueUtil(this).select(['Incidents','Services']).actions(),
             newService(){
                 this.$router.push("/services");
+            },
+            selectionChange(rows){
+                this.selectRow = rows.length === 0
             },
             openModal(){
                 this.modalTitle = "Create New Incident";
@@ -154,15 +189,11 @@
             },
             changePage(page){
                 page ? this.query.current = page : null;
+                this.selectRow = true;
                 VueUtil(this).select('Incidents').list(this.query);
             },
             changePageSizer(pageSize){
                 VueUtil(this).select('Incidents').list({pageSize: pageSize || 10, current: _.get(this.query, "current", 1)});
-            },
-            getServices(){
-                debugger
-                let services = _.get(this,'Services.list.data',[]);
-                return services;
             },
             listenIncidents(data){
                 if (!data.loading) {
@@ -172,15 +203,22 @@
                     } else {
                         this.$Message.success(`${data.type} success!`);
                         setTimeout(() => {
+                            this.loading = data.loading;
                             this.modal = false;
                             this.changePage();
-                            this.loading = data.loading;
+                            this.$refs['form'].handleReset('formValidate').resetFields();
                         }, 600);
                     }
                 }
             },
             listenServices(data){
-
+                if (!data.loading) {
+                    if (!data.error) {
+                       this.dicts = {
+                           Services: _.map(data.data ,d => { return {value:d.id, label:d.name} })
+                       }
+                    }
+                }
             }
         },
 
@@ -189,40 +227,42 @@
             VueUtil(this).select("Services").list();
         },
         watch: {
-            'Service.list': 'listenServices'
+            'Services.list': 'listenServices',
+            'Incidents.save': 'listenIncidents',
+            'Incidents.update': 'listenIncidents',
+            'Incidents.delete': 'listenIncidents',
         },
         props: {},
         data(){
 
             let fields = [
+                {type: 'selection',width: 60,align: 'center',scope:['column']},
                 {id:"Status",label:"Status", type:"input", sortable:true, span:24, formIndex:5},
                 {id:"Urgency",label:"Urgency", type:"input", sortable:true, span:24, scope:['column']},
-                {id:"Title",label:"Title", type:"input", sortable:true, span:24, formIndex:3},
+                {id:"Title",label:"Title", type:"input", sortable:true, span:24, formIndex:3,rules:[{required:true}]},
                 {id:"Created",label:"Created", type:"hidden", sortable:true, span:24,},
-                {id:"Service",label:"Service", type:"select", sortable:true, span:24, formIndex:1, options:this.getServices()},
+                {id:"Service",label:"Service", type:"select", sortable:true, span:24, formIndex:1, options:"Services"},
                 {id:"Assigned",label:"Assigned To", type:"input", sortable:true, span:24, formIndex: 4},
-                {id:"Description",label:"Description", type:"textarea", sortable:true, span:24, formIndex:6},
+                {id:"Description",label:"Description", type:"textarea", sortable:true, span:24, formIndex:6 ,scope:['form']},
             ]
             let formUtil = FormUtil(this);
             formUtil.fields(fields);
             let query = formUtil.defaultQuery();
             return {
+                selectRow: true,
+                assigendToMe: false,
+                status: 1,
                 modalTitle: "",
                 query,
                 loading: false,
                 modal: false,
                 fields: formUtil.fields(),
+                dicts: {},
                 queryFields: formUtil.queryFields(),
                 formValidate: formUtil.forms(),
                 ruleValidate: formUtil.rules(),
                 columns: [
                     ...formUtil.columns(),
-                    {
-                        key: 'id',
-                        render: (h, params) => {
-                            return ( <DropMenuDecorator id={params.row.id} select={this.operate} title='Operate' list={rowMenuList}></DropMenuDecorator>);
-                        }
-                    }
                 ]
             }
         }

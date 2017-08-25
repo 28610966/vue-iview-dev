@@ -190,7 +190,7 @@
                     label: 'Service',
                     id: 'name',
                     sortable:true,
-                    width:'230px',
+                    width:'200px',
                     render: (h, params) => {
                         return (<div><a href='javascript:void()' onClick={this.operate.bind(this,`view/${params.row.id}`)}>{params.row.name}</a><p>{params.row.description}</p></div>);
                     }

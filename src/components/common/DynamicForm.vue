@@ -7,9 +7,9 @@
                     <Input type="hidden" v-if="field.type === 'hidden'" v-model="formValidate[field.id]"></Input>
                     <Input :style="field.style"  v-if="field.type === 'input'" v-model="formValidate[field.id]"
                            :placeholder="`please input${field.label}`"></Input>
-                    <Select :style="field.style"  v-else-if="field.type ==='select'" v-model="formValidate[field.id]"
+                    <Select v-if="dicts && dicts[field.options]" :style="field.style"  v-else-if="field.type ==='select'" v-model="formValidate[field.id]"
                             :placeholder="`please input${field.label}`">
-                        <Option v-for="option in field.options" :value="option.value">{{option.label}}</Option>
+                        <Option v-for="option in dicts[field.options]" :value="option.value">{{option.label}}</Option>
                     </Select>
                     <Date-picker v-else-if="field.type ==='date'" type="date" :placeholder="`please select${field.label}`"
                                  v-model="formValidate[field.id]"></Date-picker>
@@ -44,6 +44,7 @@
             'fields',
             'labelWidth',
             'button',
+            'dicts',
         ],
         data () {
             return {}

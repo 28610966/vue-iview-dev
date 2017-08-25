@@ -18,16 +18,15 @@ export default (scope, vuex) => {
             error: null,
             data: {},
         };
-        mutations[`set_${key}`] = (state, data) => {
+        mutations[`set_${scope}_${key}`] = (state, data) => {
             if (!state[key])
                 state[key] = data;
             else
                 state[key] = {...state[key], ...data};
         };
         const action = vuex.actions[key];
-
         actions[`${scope}_${key}`] = ({commit, state}, payload) => {
-            commit(`set_${key}`, {loading: true});
+            commit(`set_${scope}_${key}`, {loading: true});
             let url = action.url(payload) || '/';
             if (action.method === 'get')
                 url = util.stitchingParams(url, payload);
@@ -37,14 +36,14 @@ export default (scope, vuex) => {
                 method: action.method || 'get',
                 data: payload,
             }).then(function (res) {
-                commit(`set_${key}`, {
+                commit(`set_${scope}_${key}`, {
                     loading: false,
                     error: res.errorMsg,
                     data: res.data.content || 'data format error!'
                 });
             }).catch(function (err) {
                 console.log(err);
-                commit(`set_${key}`, {
+                commit(`set_${scope}_${key}`, {
                     loading: false,
                     err: err,
                     data: null
