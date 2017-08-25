@@ -4,7 +4,26 @@
     }
 </style>
 <template>
+
     <Row type="flex">
+        <!--<Dropdown style="margin-left: 20px">-->
+        <!---->
+        <!--<Dropdown-menu slot="list">-->
+        <!--<Dropdown-item>驴打滚</Dropdown-item>-->
+        <!--<Dropdown-item>炸酱面</Dropdown-item>-->
+        <!--<Dropdown-item>冰糖葫芦</Dropdown-item>-->
+        <!--<Dropdown-item divided>北京烤鸭</Dropdown-item>-->
+        <!--</Dropdown-menu>-->
+        <!--</Dropdown>-->
+        <!--<div class="ivu-dropdown">-->
+        <!--<div class="ivu-dropdown-rel">-->
+        <!--<ul class="ivu-dropdown-menu">-->
+        <!--<li class="ivu-dropdown-item">查看</li>-->
+        <!--<li class="ivu-dropdown-item">编辑</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="ivu-select-dropdown" style="transform-origin: center top 0px; display: none;"></div>-->
+        <!--</div>-->
         <Col span="20">
         <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
             <Col span="16">
@@ -47,6 +66,9 @@
                         消息提示文案
 
 
+
+
+
                         <template slot="desc">消息提示的描述文案消息提示的描述文案消息提示的描述文案消息提示的描述文案消息提示的描述文案</template>
                     </Alert>
                 </Tab-pane>
@@ -74,8 +96,13 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
+    import {DropMenuDecorator} from '../../../common';
+    import iView from 'iview';
 
     export default {
+        components: {
+            DropMenuDecorator
+        },
         computed: {
             ...VueUtil(this).select(['Services']).state(),
         },
@@ -131,6 +158,27 @@
                     }
                 }
             },
+            operate(id){
+                var $id = id.split("/");
+                switch ($id[0]){
+                    case 'view':
+                        this.$router.push(`/services/${$id[1]}`);
+                        break;
+                    case 'edit':
+                        this.$router.push(`/service_edit/${$id[1]}`);
+                        break;
+                    case 'newInsident':
+                        break;
+                    case 'delete':
+                        this.deleteServices(_.parseInt($id[1]));
+                        break;
+                    case 'scheduleMaintenance':
+                        break;
+                }
+            }
+        },
+        watch: {
+            'Services.delete': 'listenServices',
         },
         // 挂载完毕请求数据
         mounted(){
@@ -141,21 +189,15 @@
                 {
                     label: 'Service',
                     id: 'name',
+                    sortable:true,
+                    width:'230px',
                     render: (h, params) => {
-                        return h('div',[
-                            h('a',{
-                                on:{
-                                    click: ()=>{
-                                        this.$router.push(`/services/${params.row.id}`)
-                                    }
-                                }
-                            },params.row.name),
-                            h('p',{},params.row.description),
-                        ])
+                        return (<div><a href='javascript:void()' onClick={this.operate.bind(this,`view/${params.row.id}`)}>{params.row.name}</a><p>{params.row.description}</p></div>);
                     }
                 }, {
                     label: 'Incidents',
                     id: 'integrationType',
+                    sortable:true,
                 }, {
                     label: 'Last Incident',
                     id: 'Last Incident',
@@ -179,6 +221,13 @@
             const formUtil = FormUtil(this);
             formUtil.fields(fields);
             let query = formUtil.defaultQuery();
+            const rowMenuList = [
+                {title:"view",icon:"search",type:'view'},
+                {title:"edit",icon:"edit",type:'edit'},
+                {title:"Schedule Maintenance",icon:"clock",type:'scheduleMaintenance'},
+                {title:"New Insident",icon:"plus",type:'newInsident'},
+                {title:"delete",icon:"trash-a",type:'delete'},
+            ]
             return {
                 query,
                 loading: false,
@@ -190,7 +239,7 @@
                     {
                         key: 'id',
                         render: (h, params) => {
-
+                            return ( <DropMenuDecorator id={params.row.id} select={this.operate} title='Operate' list={rowMenuList}></DropMenuDecorator>);
                         }
                     }
                 ]

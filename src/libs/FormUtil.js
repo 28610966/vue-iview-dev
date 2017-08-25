@@ -24,7 +24,7 @@ function util(context) {
             //     return fields;
             fields.push(field);
         } else {
-            return fields;
+            return _.sortBy(fields, f=> f.formIndex);
         }
     }
     this.forms = () => {

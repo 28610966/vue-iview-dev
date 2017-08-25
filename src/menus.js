@@ -5,12 +5,13 @@ const menus = [{
     "id": 1,
     "title": "Incidents",
     "icon": "desktop",
-    "path": "/desktop",
+    "path": "/incidents",
     "role": "1",
 }, {
     "id": 4,
     "title": "Alerts",
     "icon": "user",
+    "path": "/alerts",
     "role": "2",
 }, {
     "id": 8,

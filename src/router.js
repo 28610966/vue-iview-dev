@@ -9,14 +9,14 @@ const routers = [{
         {
             name: 'Incidents',
             path: '/incidents',
-            component: Pages.Nothing,
+            component: Pages.Incidents,
         }, {
             name: 'Alerts',
             path: '/alerts',
             component: Pages.Nothing,
         }, {
             name: 'Configuration',
-            path: '/',
+            path: '/configuration',
             component: Pages.Nothing,
             children: [
                 {
@@ -38,13 +38,12 @@ const routers = [{
                     name: 'Add Service',
                     path: '/service_add',
                     component: Pages.AddService
+                },{
+                    name: 'Edit Service',
+                    path: '/service_edit/:id',
+                    component: Pages.AddService
                 },
             ]
-        },
-        {
-            name: '门户',
-            path: '/fuck',
-            component: Pages.Fuck
         }, {
             path: '*', component: Pages.NoMatchPage
         }

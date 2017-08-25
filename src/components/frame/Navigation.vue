@@ -1,20 +1,14 @@
 <template>
-    <Menu :mode="mode" :theme="theme1" width="auto" v-on:on-select="goTo">
-        <Submenu v-bind:title="m1.title" v-bind:name="m1.id" v-for="m1 in menus">
-            <template slot="title">
-                <Icon v-bind:type="m1.icon"></Icon>
-                {{m1.title}}
-            </template>
-            <Menu-item v-bind:name="m2.path" v-for="m2 in m1.children">
-                {{m2.title}}
-            </Menu-item>
-        </Submenu>
+    <Menu :mode="mode" :theme="theme1" width="auto" @on-select="goTo">
+        <MenuDecorator :menu="m1" v-for="m1 in menus"></MenuDecorator>
     </Menu>
 </template>
 <script>
     import menus from '../../menus';
+    import {MenuDecorator} from '../common';
     export default {
         name: 'Navigation',
+        components: {MenuDecorator},
         data () {
             return {
                 theme1: 'dark',

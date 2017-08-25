@@ -7,5 +7,6 @@ export {default as Schedules } from './configuration/Schedules';
 export {default as AddService } from './configuration/services/AddService';
 export {default as ServiceDetail } from './configuration/services/ServiceDetail';
 export {default as Services } from './configuration/services/Services';
+export {default as Incidents } from './incidents/Incidents';
 export {default as System } from './system/System';
 export {default as User } from './user/User';

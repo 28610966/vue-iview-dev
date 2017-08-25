@@ -4,17 +4,15 @@
         background: #f5f7f9;
         position: relative;
         box-flex: 1;
-        overflow: hidden;
+        /*overflow: hidden;*/
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
     }
 
-
-
     .layout-right {
         box-sizing: content-box;
-        height: 100%;
+        height: 300px;
         flex: 1;
     }
 
@@ -34,7 +32,7 @@
     }
 
     .layout-content {
-        height: 100%;
+        height: calc('100% - 100px');
         overflow: auto;
         /*margin: 15px;*/
         background: #fff;
@@ -48,7 +46,8 @@
 
     .layout-content-main {
         padding: 10px;
-        height: 100%;
+        overflow: inherit;
+        /*height: auto;*/
     }
 
     .layout-header {
@@ -61,8 +60,8 @@
     .logo {
         font-size: 32px;
         font-weight: 700;
-        color: #ffffff;
-        padding:0px 10px;
+        color: #19be6b;
+        padding: 0px 10px;
     }
 
     .layout-ceiling-main a {
@@ -91,15 +90,16 @@
 </style>
 <template>
     <div class="layout">
-        <div class="layout-menu-left">
-            <Row type="flex">
-                <Col span="2">
+        <Affix>
+            <div class="layout-menu-left">
+                <Row type="flex">
+                    <Col span="3">
                     <div class="logo">Hedwig</div>
-                </Col>
-                <Col span="18">
+                    </Col>
+                    <Col span="17">
                     <Navigation></Navigation>
-                </Col>
-                <Col span="4" class="right">
+                    </Col>
+                    <Col span="4" class="right">
                     <Dropdown placement="bottom-end">
                         <a href="javascript:void(0)">
                             Admin
@@ -109,9 +109,10 @@
                             <Dropdown-item>Log out</Dropdown-item>
                         </Dropdown-menu>
                     </Dropdown>
-                </Col>
-            </Row>
-        </div>
+                    </Col>
+                </Row>
+            </div>
+        </Affix>
         <div class="layout-right">
             <div class="layout-header">
                 <div class="layout-header">
@@ -122,7 +123,7 @@
                         <Breadcrumb></Breadcrumb>
                     </div>
                     <!--<div class="layout-right-top-tools">-->
-                        <!--<RightTopTools></RightTopTools>-->
+                    <!--<RightTopTools></RightTopTools>-->
                     <!--</div>-->
                 </div>
             </div>
