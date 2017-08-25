@@ -1,0 +1,64 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.grid-top-tools {
+  margin-bottom: 8px;
+}
+
+.colour_bar {
+  overflow: hidden;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: transparent;
+}
+
+.colour_bar_left {
+  width: 100px;
+  background: #2b85e4;
+  font-size: 12px;
+  color: #ffffff;
+  text-align: center;
+  margin-left: -25px;
+  margin-top: 15px;
+  transform: rotate(-45deg);
+}
+
+.ivu-menu-opened {
+  //background: #2b85e4;
+  background: #80848f;
+}
+
+.layout-menu-left {
+  background: #464c5b;
+  .right {
+    display: flex;
+    justify-content: flex-end;
+    .ivu-dropdown {
+      cursor: pointer;
+      height: 60px;
+      width: 100px;
+      text-align: center;
+      line-height: 60px;
+      color: #ffffff;
+      .ivu-dropdown-rel{
+        &:hover {
+          background: #80848f;
+        }
+        & > a {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+  .ivu-select-dropdown{
+    margin-top: 0px;
+    border-radius: 0px;
+  }
+}
