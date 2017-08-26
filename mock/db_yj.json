@@ -1694,7 +1694,16 @@
       ]
     }
   ],
-  "Teams": [],
+  "Teams": [
+    {
+      "id": 1503729193177,
+      "name": "jajjaa",
+      "escalationPolicies": [
+        "a",
+        "b"
+      ]
+    }
+  ],
   "Users": [
     {
       "name": "fdsaf",
@@ -1711,6 +1720,30 @@
       "baseRole": null,
       "teams": 1503720953937,
       "id": 1503727488376
+    },
+    {
+      "name": "fdsafa",
+      "Email": "aaaa",
+      "jobTitle": "aaa",
+      "baseRole": null,
+      "teams": 1503729193177,
+      "id": 1503729371829
+    },
+    {
+      "name": "fdsaf",
+      "Email": "fdsaf",
+      "jobTitle": null,
+      "baseRole": null,
+      "teams": null,
+      "id": 1503729575193
+    },
+    {
+      "name": "fdsafa",
+      "Email": null,
+      "jobTitle": null,
+      "baseRole": null,
+      "teams": 1503720953937,
+      "id": 1503729589115
     }
   ]
 }

@@ -2,6 +2,7 @@
     .layout {
         height: 100%;
         background: #f5f7f9;
+        background: #1c2438;
         position: relative;
         box-flex: 1;
         /*overflow: hidden;*/
@@ -46,8 +47,7 @@
 
     .layout-content-main {
         padding: 10px;
-        overflow: inherit;
-        /*height: auto;*/
+        min-height: 400px;
     }
 
     .layout-header {

@@ -48,7 +48,11 @@
                 this.loading = true;
                 this.$refs['form'].validate({
                     ok: (data) => {
-                        VueUtil(this).select('Services').save(data);
+                        if(!data.id){
+                            VueUtil(this).select('Services').save(data);
+                        }else{
+                            VueUtil(this).select('Services').update(data);
+                        }
                     }, err: () => {
                         this.loading = false;
                     }
@@ -56,20 +60,28 @@
             },
             listenServices(data){
                 if (!data.loading) {
-                    if (!!data.error) {
-                        this.$Message.error(`${data.type} fail!`);
-                        this.loading = data.loading;
-                    } else {
-                        this.$Message.success(`${data.type} success!`);
-                        setTimeout(() => {
+                    if(data.type === 'get'){
+                        this.formValidate = data.data;
+                    }else {
+                        if (!!data.error) {
+                            this.$Message.error(`${data.type} fail!`);
                             this.loading = data.loading;
-                            this.$router.push('/services');
-                        }, 2000);
+                        } else {
+                            this.$Message.success(`${data.type} success!`);
+                            setTimeout(() => {
+                                this.loading = data.loading;
+                                this.$router.push('/services');
+                            }, 2000);
+                        }
                     }
                 }
             },
         },
+        mounted(){
+           VueUtil(this).select('Services').get(this.$route.params.id);
+        },
         watch: {
+            'Services.get': 'listenServices',
             'Services.update': 'listenServices',
             'Services.delete': 'listenServices',
             'Services.save': 'listenServices',

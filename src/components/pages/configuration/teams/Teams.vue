@@ -15,7 +15,7 @@
         <Row>
                 <Col span="24">
                 <div style="float: right;">
-                    <Page :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"
+                    <Page :page-size="query.pageSize" :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"
                           @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
@@ -23,13 +23,13 @@
                 <Col span="24">
                     <Table size="small" :columns="columns" :data="Teams.list.data.list"></Table>
                 </Col>
-                <!--<Col span="24">-->
-                <!--<div style="float: right;">-->
-                    <!--<Page :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"-->
-                          <!--@on-change="changePage" @on-page-size-change="changePageSizer" show-total-->
-                          <!--show-sizer></Page>-->
-                <!--</div>-->
-                <!--</Col>-->
+                <Col span="24">
+                <div style="float: right;">
+                    <Page :page-size="query.pageSize" :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"
+                          @on-change="changePage" @on-page-size-change="changePageSizer" show-total
+                          show-sizer></Page>
+                </div>
+                </Col>
         </Row>
         </Col>
         <Col span="4">
@@ -42,6 +42,7 @@
 
         <Modal width="600px" v-model="modal" :title="modalTitle"
                :loading="loading"
+               :mask-closable="false"
                @on-ok="saveTeams">
             <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
@@ -69,7 +70,7 @@
             openModal(){
                 this.modalTitle = "Add Teams";
                 this.modal = true;
-
+                this.loading = false;
             },
             resetForm(){
                 this.$refs['form'].handleReset('formValidate');
@@ -78,7 +79,10 @@
                 this.loading = true;
                 this.$refs['form'].validate({
                     ok: (data) => {
-                        VueUtil(this).select('Teams').save(data);
+                        if(!!data.id)
+                            VueUtil(this).select('Teams').update(data);
+                        else
+                            VueUtil(this).select('Teams').save(data);
                     }, err: () => {
                         this.loading = false;
                     }
@@ -104,18 +108,24 @@
             },
             listenTeams(data){
                 if (!data.loading) {
-                    if (!!data.error) {
-                        this.$Message.error(`${data.type} fail!`);
-                        this.loading = data.loading;
-                    } else {
-                        this.$Message.success(`${data.type} success!`);
-                        setTimeout(() => {
+                    if(data.type === 'get'){
+                        this.formValidate = data.data;
+                        this.openModal();
+                    }else{
+                        if (!!data.error) {
+                            this.$Message.error(`${data.type} fail!`);
                             this.loading = data.loading;
-                            this.modal = false;
-                            this.changePage();
-                            this.$refs['form'].handleReset('formValidate');
-                        }, 600);
+                        } else {
+                            this.$Message.success(`${data.type} success!`);
+                            setTimeout(() => {
+                                this.modal = false;
+
+                                this.changePage();
+                                this.$refs['form'].handleReset('formValidate');
+                            }, 600);
+                        }
                     }
+
                 }
             },
             operate(id){
@@ -124,6 +134,7 @@
                     case 'view':
                         break;
                     case 'edit':
+                        VueUtil(this).select('Teams').get(_.parseInt($id[1]));
                         break;
                     case 'delete':
                         this.deleteTeams(_.parseInt($id[1]));
@@ -132,6 +143,7 @@
             }
         },
         watch: {
+            'Teams.get': 'listenTeams',
             'Teams.delete': 'listenTeams',
             'Teams.save': 'listenTeams',
             'Teams.update': 'listenTeams',
@@ -142,6 +154,10 @@
         },
         data(){
             let fields = [
+                {
+                    id:'id',
+                    type:'hidden'
+                },
                 {
                     label: 'Name',
                     id: 'name',

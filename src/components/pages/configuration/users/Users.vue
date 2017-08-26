@@ -7,7 +7,7 @@
             <h1>{{title}}</h1>
             </Col>
             <Col span="8">
-            <div style="text-align: right"><Input v-model="value4" icon="search" placeholder="Search..."
+            <div style="text-align: right"><Input icon="search" placeholder="Search..."
                                                   style="width: 200px"></Input>
             </div>
             </Col>
@@ -15,7 +15,7 @@
         <Row>
                 <Col span="24">
                 <div style="float: right;">
-                    <Page :total="Users.list.data.total" :current="Users.list.data.current" size="small"
+                    <Page :page-size="query.pageSize" :total="Users.list.data.total" :current="Users.list.data.current" size="small"
                           @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
@@ -26,7 +26,7 @@
                 </Col>
                 <Col span="24">
                 <div style="float: right;">
-                    <Page :total="Users.list.data.total" :current="Users.list.data.current" size="small"
+                    <Page :page-size="query.pageSize" :total="Users.list.data.total" :current="Users.list.data.current" size="small"
                           @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
@@ -70,17 +70,24 @@
             openModal(){
                 this.modalTitle = "Add Users";
                 this.modal = true;
+                this.loading = false;
                 VueUtil(this).select('Teams').list();
             },
             saveUsers(){
                 this.loading = true;
                 this.$refs['form'].validate({
                     ok: (data) => {
-                        VueUtil(this).select('Users').save(data);
+                        if(!!data.id)
+                            VueUtil(this).select('Users').update(data);
+                        else
+                            VueUtil(this).select('Users').save(data);
                     }, err: () => {
                         this.loading = false;
                     }
                 });
+            },
+            resetForm(){
+                this.$refs['form'].handleReset('formValidate');
             },
             btnClick(){
                 this.$router.push(this.addBtn.path);
@@ -101,18 +108,22 @@
                 VueUtil(this).select('Users').list(this.query);
             },
             listenUsers(data){
-                if (!data.loading) {
-                    if (!!data.error) {
-                        this.$Message.error(`${data.type} fail!`);
-                        this.loading = data.loading;
-                    } else {
-                        this.$Message.success(`${data.type} success!`);
-                        setTimeout(() => {
-                            this.modal = false;
-                            this.changePage();
+                if (data.type === 'get') {
+                    this.formValidate = data.data;
+                    this.openModal();
+                } else {
+                    if (!data.loading) {
+                        if (!!data.error) {
+                            this.$Message.error(`${data.type} fail!`);
                             this.loading = data.loading;
-                            this.$refs['form'].handleReset('formValidate').resetFields();
-                        }, 600);
+                        } else {
+                            this.$Message.success(`${data.type} success!`);
+                            setTimeout(() => {
+                                this.modal = false;
+                                this.changePage();
+                                this.$refs['form'].handleReset('formValidate').resetFields();
+                            }, 600);
+                        }
                     }
                 }
             },
@@ -132,7 +143,7 @@
                         this.$router.push(`/services/${$id[1]}`);
                         break;
                     case 'edit':
-                        this.$router.push(`/service_edit/${$id[1]}`);
+                        VueUtil(this).select('Users').get(_.parseInt($id[1]));
                         break;
                     case 'delete':
                         this.deleteUsers(_.parseInt($id[1]));
@@ -141,6 +152,7 @@
             }
         },
         watch: {
+            'Users.get': 'listenUsers',
             'Users.delete': 'listenUsers',
             'Users.save': 'listenUsers',
             'Users.update': 'listenUsers',

@@ -24,7 +24,7 @@
         <Button v-if="!selectRow" icon="ok">Merge Incidents</Button>
         </Col>
         <Col span="10" style="text-align: right;padding: 0px;">
-        <Page :total="total" :current="current" size="small"
+        <Page :total="total" :current="current" size="small"  :page-size="pageSize"
               @on-change="changePage" @on-page-size-change="changePageSizer" show-total
               show-sizer></Page>
         </Col>
@@ -52,6 +52,7 @@
             'current',
             'changePage',
             'changePageSizer',
+            'pageSize'
         ],
         data(){
             return {}

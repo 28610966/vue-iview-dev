@@ -40,13 +40,13 @@
                                 </ButtonGroup>
                                 </Col>
                                 <Col span="24">
-                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current"></IncidentsTools>
+                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current" :pageSize="query.pageSize"></IncidentsTools>
                                 </Col>
                                 <Col span="24">
                                         <Table @on-selection-change="selectionChange" size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
                                 </Col>
                                 <Col span="24">
-                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current"></IncidentsTools>
+                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current" :pageSize="query.pageSize"></IncidentsTools>
                                 </Col>
                             </Row>
                         </Card>
@@ -96,7 +96,8 @@
             <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveIncidents">提交</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveIncidents">Submit</Button>
+                <Button size="large" @click="resetForm">Reset</Button>
             </div>
         </Modal>
     </div>
@@ -124,6 +125,7 @@
             openModal(){
                 this.modalTitle = "Create New Incident";
                 this.modal = true;
+                this.loading = false;
             },
             saveIncidents(){
                 this.loading = true;
@@ -134,6 +136,9 @@
                         this.loading = false;
                     }
                 });
+            },
+            resetForm(){
+                this.$refs['form'].handleReset('formValidate');
             },
             deleteIncidents(id){
                 VueUtil(this).select('Incidents').delete(id);
@@ -151,18 +156,22 @@
                 VueUtil(this).select('Incidents').list(this.query);
             },
             listenIncidents(data){
-                if (!data.loading) {
-                    if (!!data.error) {
-                        this.$Message.error(`${data.type} fail!`);
-                        this.loading = data.loading;
-                    } else {
-                        this.$Message.success(`${data.type} success!`);
-                        setTimeout(() => {
+                if (data.type === 'get') {
+                    this.formValidate = data.data;
+                    this.openModal();
+                } else {
+                    if (!data.loading) {
+                        if (!!data.error) {
+                            this.$Message.error(`${data.type} fail!`);
                             this.loading = data.loading;
-                            this.modal = false;
-                            this.changePage();
-                            this.$refs['form'].handleReset('formValidate');
-                        }, 600);
+                        } else {
+                            this.$Message.success(`${data.type} success!`);
+                            setTimeout(() => {
+                                this.modal = false;
+                                this.changePage();
+                                this.$refs['form'].handleReset('formValidate');
+                            }, 600);
+                        }
                     }
                 }
             },
@@ -182,23 +191,24 @@
             VueUtil(this).select("Services").list();
         },
         watch: {
-            'Services.list': 'listenServices',
+            'Incidents.get': 'listenIncidents',
             'Incidents.save': 'listenIncidents',
             'Incidents.update': 'listenIncidents',
             'Incidents.delete': 'listenIncidents',
+            'Services.list': 'listenServices',
         },
         props: {},
         data(){
 
             let fields = [
                 {type: 'selection',width: 60,align: 'center',scope:['column']},
-                {id:"Status",label:"Status", type:"input", sortable:true, span:24, formIndex:5},
-                {id:"Urgency",label:"Urgency", type:"input", sortable:true, span:24, scope:['column']},
-                {id:"Title",label:"Title", type:"input", sortable:true, span:24, formIndex:3,rules:[{required:true}]},
-                {id:"Created",label:"Created", type:"hidden", sortable:true, span:24,},
-                {id:"Service",label:"Service", type:"select", sortable:true, span:24, formIndex:1, options:"Services"},
-                {id:"Assigned",label:"Assigned To", type:"input", sortable:true, span:24, formIndex: 4},
-                {id:"Description",label:"Description", type:"textarea", sortable:true, span:24, formIndex:6 ,scope:['form']},
+                {id:"Status",label:"Status", type:"input", sortable:true, span:22, formIndex:5},
+                {id:"Urgency",label:"Urgency", type:"input", sortable:true, span:22, scope:['column']},
+                {id:"Title",label:"Title", type:"input", sortable:true, span:22, formIndex:3,rules:[{required:true}]},
+                {id:"Created",label:"Created", type:"hidden", sortable:true, span:22,},
+                {id:"Service",label:"Service", type:"select", sortable:true, span:22, formIndex:1, options:"Services"},
+                {id:"Assigned",label:"Assigned To", type:"input", sortable:true, span:22, formIndex: 4},
+                {id:"Description",label:"Description", type:"textarea", sortable:true, span:22, formIndex:6 ,scope:['form']},
             ]
             let formUtil = FormUtil(this);
             formUtil.fields(fields);

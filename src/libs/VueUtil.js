@@ -41,7 +41,7 @@ function util(_context, defaultEntity) {
         return this;
     };
     this.get = (payload) => {
-        this.action('list',_.isObject() ? payload : {id: payload});
+        this.action('get',_.isObject() ? payload : {id: payload});
         return this;
     };
 
