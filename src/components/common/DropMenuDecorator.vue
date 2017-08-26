@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Dropdown trigger="click" placement="bottom-end" transfer="true" @on-click="select">
+        <Dropdown trigger="click" placement="bottom-end" :transfer="true" @on-click="select">
             <Button size="small" icon="gear-b" href="javascript:void(0)">
                 {{title}}
                 <Icon type="arrow-down-b"></Icon>
@@ -17,11 +17,11 @@
 <script>
     export default {
         name: 'DropMenuDecorator',
-        props:{
-            id:null,
-            title:"",
-            select:null,
-            list:[]
-        }
+        props:[
+            "id",
+            "title",
+            "select",
+            "list",
+        ]
     }
 </script>

@@ -47,7 +47,7 @@ const menus = [{
     "group": "audit",
     "role": "4",
     "icon": "area-chart",
-    "children": [{"id": 19, "title": "Reports", "path": "/reports"}, {
+    "children": [{"id": 19, "title": "Reports", "path": "/demo"}, {
         "id": 20,
         "title": "Postmortems",
         "path": "/postmortems"

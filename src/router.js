@@ -53,6 +53,17 @@ const routers = [{
                 },
             ]
         }, {
+            name: 'Analytics',
+            path: '/analytics',
+            component: Pages.Nothing,
+            children:[
+                {
+                    name:'demo',
+                    path: '/demo',
+                    component:Pages.UsersDemo
+                }
+            ]
+        },{
             path: '*', component: Pages.NoMatchPage
         }
     ]

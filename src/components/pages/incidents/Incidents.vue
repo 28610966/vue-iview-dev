@@ -147,7 +147,8 @@
                 VueUtil(this).select('Incidents').list(this.query);
             },
             changePageSizer(pageSize){
-                VueUtil(this).select('Incidents').list({pageSize: pageSize || 10, current: _.get(this.query, "current", 1)});
+                this.query.pageSize = pageSize;
+                VueUtil(this).select('Incidents').list(this.query);
             },
             listenIncidents(data){
                 if (!data.loading) {
@@ -160,7 +161,7 @@
                             this.loading = data.loading;
                             this.modal = false;
                             this.changePage();
-                            this.$refs['form'].handleReset('formValidate').resetFields();
+                            this.$refs['form'].handleReset('formValidate');
                         }, 600);
                     }
                 }

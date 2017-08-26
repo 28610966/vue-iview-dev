@@ -7,7 +7,7 @@
             <h1>{{title}}</h1>
             </Col>
             <Col span="8">
-            <div style="text-align: right"><Input v-model="value4" icon="search" placeholder="Search..."
+            <div style="text-align: right"><Input icon="search" placeholder="Search..."
                                                   style="width: 200px"></Input>
             </div>
             </Col>
@@ -21,16 +21,15 @@
                 </div>
                 </Col>
                 <Col span="24">
-                <Table size="small" :columns="columns" :data="Teams.list.data.list"></Table>
-
+                    <Table size="small" :columns="columns" :data="Teams.list.data.list"></Table>
                 </Col>
-                <Col span="24">
-                <div style="float: right;">
-                    <Page :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"
-                          @on-change="chagePage" @on-page-size-change="changePageSizer" show-total
-                          show-sizer></Page>
-                </div>
-                </Col>
+                <!--<Col span="24">-->
+                <!--<div style="float: right;">-->
+                    <!--<Page :total="Teams.list.data.total" :current="Teams.list.data.current" size="small"-->
+                          <!--@on-change="changePage" @on-page-size-change="changePageSizer" show-total-->
+                          <!--show-sizer></Page>-->
+                <!--</div>-->
+                <!--</Col>-->
         </Row>
         </Col>
         <Col span="4">
@@ -40,13 +39,15 @@
             </p>
             <Button  @click="openModal" style="width:100%; text-align: left" icon="plus" type="success">Add Teams</Button>
         </Card>
+
         <Modal width="600px" v-model="modal" :title="modalTitle"
                :loading="loading"
                @on-ok="saveTeams">
-            <DynamicForm labelWidth="100px" :button="{enabled:false}"  ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveTeams">提交</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveTeams">Submit</Button>
+                <Button size="large" @click="resetForm">reset</Button>
             </div>
         </Modal>
         </Col>
@@ -55,7 +56,6 @@
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
     import {DropMenuDecorator,DynamicForm} from '../../../common';
-    import iView from 'iview';
 
     export default {
         components: {
@@ -69,6 +69,10 @@
             openModal(){
                 this.modalTitle = "Add Teams";
                 this.modal = true;
+
+            },
+            resetForm(){
+                this.$refs['form'].handleReset('formValidate');
             },
             saveTeams(){
                 this.loading = true;
@@ -95,10 +99,8 @@
                 VueUtil(this).select('Teams').list(this.query);
             },
             changePageSizer(pageSize){
-                VueUtil(this).select('Teams').list({
-                    pageSize: pageSize || 10,
-                    current: _.get(this.query, "current", 1)
-                });
+                this.query.pageSize = pageSize;
+                VueUtil(this).select('Teams').list(this.query);
             },
             listenTeams(data){
                 if (!data.loading) {
@@ -108,10 +110,10 @@
                     } else {
                         this.$Message.success(`${data.type} success!`);
                         setTimeout(() => {
+                            this.loading = data.loading;
                             this.modal = false;
                             this.changePage();
-                            this.loading = data.loading;
-                            this.$refs['form'].handleReset('formValidate').resetFields();
+                            this.$refs['form'].handleReset('formValidate');
                         }, 600);
                     }
                 }
@@ -120,10 +122,8 @@
                 var $id = id.split("/");
                 switch ($id[0]){
                     case 'view':
-//                        this.$router.push(`/services/${$id[1]}`);
                         break;
                     case 'edit':
-//                        this.$router.push(`/service_edit/${$id[1]}`);
                         break;
                     case 'delete':
                         this.deleteTeams(_.parseInt($id[1]));
@@ -138,7 +138,7 @@
         },
         // 挂载完毕请求数据
         mounted(){
-            this.changePage(1);
+            if(this.changePage) this.changePage(1);
         },
         data(){
             let fields = [
@@ -149,13 +149,18 @@
                     sortable:true,
                     rules:[{required:true}],
                     span:24,
+                    formIndex:1
                 }, {
                     label: 'Escalation Policies',
                     id: 'escalationPolicies',
                     type:'select',
+                    multiple:true,
+                    filterable:true,
                     options:'escalationPolicies',
+                    clearable:true,
                     sortable:true,
                     span:24,
+                    formIndex:2
                 },
             ];
             const formUtil = FormUtil(this);
@@ -166,10 +171,21 @@
                 {title:"edit",icon:"edit",type:'edit'},
                 {title:"delete",icon:"trash-a",type:'delete'},
             ]
+            const dicts = {
+                escalationPolicies :[
+                    {label:'a',value:'a'},
+                    {label:'b',value:'b'},
+                    {label:'c',value:'c'},
+                    {label:'d',value:'d'},
+                ]
+            }
+
             return {
                 query,
+                dicts,
                 modal:false,
                 loading: false,
+                modalTitle:"",
                 title: 'Teams',
                 addBtn: {title: "Add New Teams", path: '/service_add',},
                 fields: formUtil.fields(),
@@ -181,7 +197,11 @@
                     {
                         key: 'id',
                         render: (h, params) => {
-                            return ( <DropMenuDecorator id={params.row.id} select={this.operate} title='Operate' list={rowMenuList}></DropMenuDecorator>);
+                            return ( <DropMenuDecorator
+                            id={params.row.id}
+                            select={this.operate}
+                            title='Operate'
+                            list={rowMenuList}></DropMenuDecorator>);
                         }
                     }
                 ],

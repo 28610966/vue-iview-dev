@@ -1,13 +1,16 @@
 <template>
     <Form ref="formSearch" :model="formSearch" :label-width="80">
         <Row>
-            <i-col v-bind:style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields"
+            <i-col :style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields"
                    :span="6">
                 <Form-item :label="field.label" :prop="field.id">
                     <Input type="hidden" v-if="field.type === 'hidden'" v-model="formSearch[field.id]"></Input>
                     <Input v-if="field.type === 'input'" v-model="formSearch[field.id]"
                            :placeholder="`请输入${field.label}`"></Input>
-                    <Select v-else-if="field.type ==='select' || field.type ==='radio'" v-model="formSearch[field.id]"
+                    <Select :multiple='field.multiple'
+                            :clearable="field.clearable || false"
+                            :filterable="field.filterable || false"
+                            v-else-if="field.type ==='select' || field.type ==='radio' || field.type ==='checkbox'" v-model="formSearch[field.id]"
                             :placeholder="`请输入${field.label}`">
                         <Option v-for="option in field.options" :value="option.value">{{option.label}}</Option>
                     </Select>
@@ -31,10 +34,6 @@
                 </Form-item>
             </i-col>
         </Row>
-        <!--<Form-item>-->
-            <!--<Button type="primary" @click="handleSubmit('formSearch')">提交</Button>-->
-            <!--<Button type="ghost" @click="handleReset('formSearch')" style="margin-left: 8px">重置</Button>-->
-        <!--</Form-item>-->
     </Form>
 </template>
 <script>
@@ -47,6 +46,9 @@
         ],
         data () {
             return {}
+        },
+        mounted(){
+          this.handleReset('formSearch')
         },
         methods: {
             validate(cb){

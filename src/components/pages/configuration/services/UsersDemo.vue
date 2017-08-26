@@ -24,7 +24,7 @@
                :loading="loading"
                @on-ok="saveUsers"
         >
-            <DynamicForm ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :dicts="dicts" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
                 <Button type="primary" size="large" :loading="loading" @click="saveUsers">提交</Button>
@@ -35,8 +35,8 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {DynamicForm, DynamicQueryForm} from '../../common'
-    import {VueUtil, FormUtil} from '../../../libs'
+    import {DynamicForm, DynamicQueryForm} from '../../../common'
+    import {VueUtil, FormUtil} from '../../../../libs'
     import _ from 'lodash';
     export default {
         components: {DynamicForm, DynamicQueryForm},
@@ -163,8 +163,10 @@
                 {
                     id: 'gender',
                     label: '性别',
-                    type: 'radio',
+                    type: 'checkbox',
                     sortable: 'custom',
+                    multiple: true,
+                    filterable:true,
                     options: [
                         {
                             value: 'male', label: "男",
@@ -207,8 +209,12 @@
             let formUtil = FormUtil(this);
             formUtil.fields(fields);
             let query = formUtil.defaultQuery();
+            const dicts = {
+
+            }
             return {
                 modalTitle: "",
+                dicts,
                 query,
                 loading: false,
                 modal: false,

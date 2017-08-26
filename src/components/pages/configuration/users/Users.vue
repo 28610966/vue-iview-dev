@@ -27,7 +27,7 @@
                 <Col span="24">
                 <div style="float: right;">
                     <Page :total="Users.list.data.total" :current="Users.list.data.current" size="small"
-                          @on-change="chagePage" @on-page-size-change="changePageSizer" show-total
+                          @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
                 </Col>
@@ -43,10 +43,11 @@
         <Modal width="600px" v-model="modal" :title="modalTitle"
                :loading="loading"
                @on-ok="saveUsers">
-            <DynamicForm :button="{enabled:false}"  ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :dicts="dicts" :button="{enabled:false}"  ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveUsers">提交</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveUsers">Submit</Button>
+                <Button size="large" @click="resetForm">reset</Button>
             </div>
         </Modal>
         </Col>
@@ -55,20 +56,21 @@
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
     import {DropMenuDecorator,DynamicForm} from '../../../common';
-    import iView from 'iview';
+    import _ from 'lodash';
 
     export default {
         components: {
             DropMenuDecorator,DynamicForm
         },
         computed: {
-            ...VueUtil(this).select(['Users']).state(),
+            ...VueUtil(this).select(['Users','Teams']).state(),
         },
         methods: {
-            ...VueUtil(this).select(['Users']).actions(),
+            ...VueUtil(this).select(['Users','Teams']).actions(),
             openModal(){
                 this.modalTitle = "Add Users";
                 this.modal = true;
+                VueUtil(this).select('Teams').list();
             },
             saveUsers(){
                 this.loading = true;
@@ -95,10 +97,8 @@
                 VueUtil(this).select('Users').list(this.query);
             },
             changePageSizer(pageSize){
-                VueUtil(this).select('Users').list({
-                    pageSize: pageSize || 10,
-                    current: _.get(this.query, "current", 1)
-                });
+                this.query.pageSize = pageSize;
+                VueUtil(this).select('Users').list(this.query);
             },
             listenUsers(data){
                 if (!data.loading) {
@@ -113,6 +113,15 @@
                             this.loading = data.loading;
                             this.$refs['form'].handleReset('formValidate').resetFields();
                         }, 600);
+                    }
+                }
+            },
+            listenTeams(data){
+                if (!data.loading) {
+                    if (!data.error) {
+                        this.dicts.Teams = _.map(data.data, t => {
+                            return {value: t.id, label: t.name}
+                        });
                     }
                 }
             },
@@ -135,13 +144,14 @@
             'Users.delete': 'listenUsers',
             'Users.save': 'listenUsers',
             'Users.update': 'listenUsers',
+            'Teams.list': 'listenTeams',
         },
         // 挂载完毕请求数据
         mounted(){
             this.changePage(1);
         },
         data(){
-            let fields = [
+            const fields = [
                 {
                     label: 'User',
                     id: 'name',
@@ -172,21 +182,27 @@
                     label: 'Teams',
                     id: 'teams',
                     type:'select',
-                    options:'roles',
+                    options:'Teams',
+                    filterable: true,
                     sortable:true,
                     span:22,
                 }
             ];
             const formUtil = FormUtil(this);
             formUtil.fields(fields);
-            let query = formUtil.defaultQuery();
+            const query = formUtil.defaultQuery();
             const rowMenuList = [
                 {title:"view",icon:"search",type:'view'},
                 {title:"edit",icon:"edit",type:'edit'},
                 {title:"delete",icon:"trash-a",type:'delete'},
             ]
+            const dicts ={
+                Roles:[],
+                Teams:[],
+            }
             return {
                 query,
+                dicts,
                 modal:false,
                 loading: false,
                 title: 'Users on My Teams',

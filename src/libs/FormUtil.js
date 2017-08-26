@@ -30,8 +30,13 @@ function util(context) {
     this.forms = () => {
         var forms = {};
         _.forEach(fields,f => {
-            if(!f.scope || _.indexOf(f.scope,'form') > -1)
-                _.assign(forms, {[f.id]: f.defaultValue || null});
+            if(!f.scope || _.indexOf(f.scope,'form') > -1){
+                let initValue = null;
+                if(f.type === 'select' && f.multiple || f.type === 'checkbox'){
+                    initValue = []
+                }
+                _.assign(forms, {[f.id]: f.defaultValue || initValue});
+            }
         });
         return forms;
     }

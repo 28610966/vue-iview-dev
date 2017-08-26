@@ -11,7 +11,7 @@
             <h1>{{title}}</h1>
             </Col>
             <Col span="8">
-            <div style="text-align: right"><Input v-model="value4" icon="search" placeholder="Search..."
+            <div style="text-align: right"><Input icon="search" placeholder="Search..."
                                                   style="width: 200px"></Input>
                 <Button @click="btnClick" icon="plus" type="success">{{addBtn.title}}</Button>
             </div>
@@ -119,10 +119,8 @@
                 VueUtil(this).select('Services').list(this.query);
             },
             changePageSizer(pageSize){
-                VueUtil(this).select('Services').list({
-                    pageSize: pageSize || 10,
-                    current: _.get(this.query, "current", 1)
-                });
+                this.query.pageSize = pageSize;
+                VueUtil(this).select('Services').list(this.query);
             },
             listenServices(data){
                 if (!data.loading) {
