@@ -13,21 +13,21 @@
         <div class="grid-top-tools">
             <Button type="primary" @click="openModal">新建数据</Button>
         </div>
-        <Table size="small" :columns="columns" :data="User.list.data.list"></Table>
+        <Table size="small" :columns="columns" :data="Users.list.data.list"></Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="User.list.data.total" :current="User.list.data.current"
+                <Page :total="Users.list.data.total" :current="Users.list.data.current"
                       @on-change="changePage" @on-page-size-change="changePageSizer" show-total show-sizer></Page>
             </div>
         </div>
         <Modal width="800px" v-model="modal" :title="modalTitle"
                :loading="loading"
-               @on-ok="saveUser"
+               @on-ok="saveUsers"
         >
             <DynamicForm ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveUser">提交</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveUsers">提交</Button>
             </div>
         </Modal>
     </div>
@@ -41,41 +41,41 @@
     export default {
         components: {DynamicForm, DynamicQueryForm},
         computed: {
-            ...VueUtil(this).select(['User', 'Dict']).state(),
+            ...VueUtil(this).select(['Users', 'Dict']).state(),
         },
         methods: {
-            ...VueUtil(this).select(['User', 'Dict']).actions(),
+            ...VueUtil(this).select(['Users', 'Dict']).actions(),
             openModal(){
                 this.modalTitle = "新增用户";
                 this.modal = true;
             },
             show(id){
-                VueUtil(this).select('User').get(id);
+                VueUtil(this).select('Users').get(id);
             },
-            saveUser(){
+            saveUsers(){
                 this.loading = true;
                 this.$refs['form'].validate({
                     ok: (data) => {
-                        VueUtil(this).select('User').save(data);
+                        VueUtil(this).select('Users').save(data);
                     }, err: () => {
                         this.loading = false;
                     }
                 });
             },
-            deleteUser(id){
-                VueUtil(this).select('User').delete(id);
+            deleteUsers(id){
+                VueUtil(this).select('Users').delete(id);
             },
-            updateUser(user){
-                VueUtil(this).select('User').update(user);
+            updateUsers(user){
+                VueUtil(this).select('Users').update(user);
             },
             changePage(page){
                 page ? this.query.current = page : null;
-                VueUtil(this).select('User').list(this.query);
+                VueUtil(this).select('Users').list(this.query);
             },
             changePageSizer(pageSize){
-                VueUtil(this).select('User').list({pageSize: pageSize || 10, current: _.get(this.query, "current", 1)});
+                VueUtil(this).select('Users').list({pageSize: pageSize || 10, current: _.get(this.query, "current", 1)});
             },
-            listenUser(data){
+            listenUsers(data){
                 if (!data.loading) {
                     if (!!data.error) {
                         this.$Message.error(`${data.type} fail!`);
@@ -98,9 +98,9 @@
         },
 
         watch: {
-            'User.update': 'listenUser',
-            'User.delete': 'listenUser',
-            'User.save': 'listenUser',
+            'Users.update': 'listenUsers',
+            'Users.delete': 'listenUsers',
+            'Users.save': 'listenUsers',
         },
         data(){
 
@@ -132,7 +132,7 @@
                     label: '出生地',
                     type: 'select',
                     span: 24,
-                    enable:['search','form','list'],
+                    scope:['search','form','list'],
                     options: [
                         {
                             value: 'shagnhai', label: "上海",
@@ -257,7 +257,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.deleteUser(params.row.id)
+                                            this.deleteUsers(params.row.id)
                                         }
                                     }
                                 }, '删除')

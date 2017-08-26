@@ -40,61 +40,14 @@
                                 </ButtonGroup>
                                 </Col>
                                 <Col span="24">
-                                    <Row>
-                                        <Col span="12" style="padding: 0px;">
-                                            <Button :disabled="selectRow">Acknowledge</Button>
-                                            <Button :disabled="selectRow">Reassign</Button>
-                                            <Button :disabled="selectRow" icon="ok">Resolve</Button>
-                                            <Dropdown placement="bottom-end" >
-                                                <Button :disabled="selectRow" icon="clock">Snooze <Icon type="arrow-down-b"></Icon></Button>
-
-                                                <Dropdown-menu slot="list" v-if="!selectRow">
-                                                    <Dropdown-item>1 hours</Dropdown-item>
-                                                    <Dropdown-item>4 hours</Dropdown-item>
-                                                    <Dropdown-item>8 hours</Dropdown-item>
-                                                    <Dropdown-item>24 hours</Dropdown-item>
-                                                    <Dropdown-item>others</Dropdown-item>
-                                                </Dropdown-menu>
-                                            </Dropdown>
-                                        <Button v-if="!selectRow" icon="ok">Merge Incidents</Button>
-                                        </Col>
-                                        <Col span="12" style="text-align: right;padding: 0px;">
-                                        <Page :total="Incidents.list.data.total" :current="Incidents.list.data.current" size="small"
-                                              @on-change="changePage" @on-page-size-change="changePageSizer" show-total
-                                              show-sizer></Page>
-                                        </Col>
-                                    </Row>
+                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current"></IncidentsTools>
                                 </Col>
                                 <Col span="24">
                                         <Table @on-selection-change="selectionChange" size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
                                 </Col>
                                 <Col span="24">
-
-                                    <Row>
-                                        <Col span="12" style="padding: 0px;">
-                                                <Button :disabled="selectRow">Acknowledge</Button>
-                                                <Button :disabled="selectRow">Reassign</Button>
-                                                <Button :disabled="selectRow" icon="ok">Resolve</Button>
-                                                <Dropdown placement="bottom-end">
-                                                    <Button :disabled="selectRow" icon="clock">Snooze <Icon type="arrow-down-b"></Icon></Button>
-                                                    <Dropdown-menu slot="list" v-if="!selectRow">
-                                                        <Dropdown-item>1 hours</Dropdown-item>
-                                                        <Dropdown-item>4 hours</Dropdown-item>
-                                                        <Dropdown-item>8 hours</Dropdown-item>
-                                                        <Dropdown-item>24 hours</Dropdown-item>
-                                                        <Dropdown-item>others</Dropdown-item>
-                                                    </Dropdown-menu>
-                                                </Dropdown>
-                                            <Button v-if="!selectRow" icon="ok">Merge Incidents</Button>
-                                        </Col>
-                                        <Col span="12" style="text-align: right;padding: 0px;">
-                                        <Page :total="Incidents.list.data.total" :current="Incidents.list.data.current" size="small"
-                                              @on-change="changePage" @on-page-size-change="changePageSizer" show-total
-                                              show-sizer></Page>
-                                        </Col>
-                                    </Row>
+                                    <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current"></IncidentsTools>
                                 </Col>
-
                             </Row>
                         </Card>
                     </Col>
@@ -122,7 +75,7 @@
                                 <Button style="width:100%">Create an on-call schedule</Button>
                             </div>
                         </Card>
-                        <Card style="margin: 5px 0px;">
+                        <Card style="margin: 10px 0px;">
                             <p slot="title">
                                 Next Steps: Your Tools
                             </p>
@@ -153,16 +106,17 @@
     import {DynamicForm, DynamicQueryForm, DropMenuDecorator} from '../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../libs';
+    import IncidentsTools from './IncidentsTools.vue'
 
     export default{
-        components: {DynamicForm, DynamicQueryForm, DropMenuDecorator},
+        components: {DynamicForm, DynamicQueryForm, DropMenuDecorator, IncidentsTools},
         computed: {
             ...VueUtil(this).select(['Incidents','Services']).state(),
         },
         methods: {
             ...VueUtil(this).select(['Incidents','Services']).actions(),
             newService(){
-                this.$router.push("/services");
+                this.$router.push("/service_add");
             },
             selectionChange(rows){
                 this.selectRow = rows.length === 0

@@ -6,7 +6,7 @@ let util = {
 
 };
 util.title = function(title) {
-    title = title ? title + ' - Home' : 'iView project';
+    title = title ? title + ' - Home' : 'Hedwig';
     window.document.title = title;
 };
 

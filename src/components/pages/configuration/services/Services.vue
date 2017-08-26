@@ -4,26 +4,7 @@
     }
 </style>
 <template>
-
     <Row type="flex">
-        <!--<Dropdown style="margin-left: 20px">-->
-        <!---->
-        <!--<Dropdown-menu slot="list">-->
-        <!--<Dropdown-item>驴打滚</Dropdown-item>-->
-        <!--<Dropdown-item>炸酱面</Dropdown-item>-->
-        <!--<Dropdown-item>冰糖葫芦</Dropdown-item>-->
-        <!--<Dropdown-item divided>北京烤鸭</Dropdown-item>-->
-        <!--</Dropdown-menu>-->
-        <!--</Dropdown>-->
-        <!--<div class="ivu-dropdown">-->
-        <!--<div class="ivu-dropdown-rel">-->
-        <!--<ul class="ivu-dropdown-menu">-->
-        <!--<li class="ivu-dropdown-item">查看</li>-->
-        <!--<li class="ivu-dropdown-item">编辑</li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="ivu-select-dropdown" style="transform-origin: center top 0px; display: none;"></div>-->
-        <!--</div>-->
         <Col span="20">
         <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
             <Col span="16">

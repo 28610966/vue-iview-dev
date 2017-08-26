@@ -12,7 +12,7 @@
         <p>
         <h3>General Settings</h3></p>
         <div>
-            <DynamicForm ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :dicts="dicts" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate" :labelWidth="150" :button="button"></DynamicForm>
         </div>
         </Col>
@@ -103,12 +103,7 @@
                     label: 'Integration Type',
                     type: 'radio',
                     style: {display: 'flex', flexDirection: 'column'},
-                    options: [
-                        {value: '1', label: 'Select Tools'},
-                        {value: '2', label: 'Integrate via email'},
-                        {value: '3', label: 'Use our API directly'},
-                        {value: '4', label: 'Don\'t use an integration'},
-                    ],
+                    options: "IntegrationType",
                     id: 'integrationType',
                     rules:[
                         {required: true, message: 'integrationType is description', trigger: 'blur'},
@@ -142,17 +137,27 @@
                     span: 18,
                     style: {display: 'flex', flexDirection: 'column'},
                     type: 'checkbox',
-                    options: [
-                        {value: 'Acknowledgement timeout', label: 'Acknowledgement timeout'},
-                        {value: 'Auto-resolution', label: 'Auto-resolution'},
-                    ],
+                    options: "IncidentTimeouts",
                     id: 'incidentTimeouts',
                 },
             ]
             const formUtil = FormUtil(this);
             formUtil.fields(fields);
+            const dicts = {
+                IntegrationType:[
+                    {value: '1', label: 'Select Tools'},
+                    {value: '2', label: 'Integrate via email'},
+                    {value: '3', label: 'Use our API directly'},
+                    {value: '4', label: 'Don\'t use an integration'},
+                ],
+                IncidentTimeouts:[
+                    {value: 'Acknowledgement timeout', label: 'Acknowledgement timeout'},
+                    {value: 'Auto-resolution', label: 'Auto-resolution'},
+                ]
+            }
             return {
                 fields: formUtil.fields(),
+                dicts,
                 formValidate: formUtil.forms(),
                 ruleValidate: formUtil.rules(),
                 button: {

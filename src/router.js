@@ -42,6 +42,14 @@ const routers = [{
                     name: 'Edit Service',
                     path: '/service_edit/:id',
                     component: Pages.AddService
+                },{
+                    name: 'Users',
+                    path: '/users',
+                    component: Pages.Users
+                },{
+                    name: 'Teams',
+                    path: '/teams',
+                    component: Pages.Teams
                 },
             ]
         }, {

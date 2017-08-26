@@ -28,7 +28,7 @@ const menus = [{
         }, {"id": 11, "title": "Escalation Policies", "path": "/event_source_management"}, {
             "id": 12,
             "title": "Users",
-            "path": "/strategy_management"
+            "path": "/users"
         }, {
             "id": 13, "title": "Teams", "path": "/teams"
         }, {
@@ -38,7 +38,6 @@ const menus = [{
         }, {
             "id": 16, "title": "Account Settings", "path": "/account_settings"
         }, {"id": 17, "title": "Analytics", "path": "/analytics"}
-
     ]
 }, {
 

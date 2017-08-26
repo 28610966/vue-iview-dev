@@ -90,7 +90,7 @@
 </style>
 <template>
     <div class="layout">
-        <Affix>
+        <!--<Affix>-->
             <div class="layout-menu-left">
                 <Row type="flex">
                     <Col span="3">
@@ -112,21 +112,21 @@
                     </Col>
                 </Row>
             </div>
-        </Affix>
+        <!--</Affix>-->
         <div class="layout-right">
-            <div class="layout-header">
-                <div class="layout-header">
-                    <i-button class="layout-collapsing-leftmenu" type="text" @click="toggleClick">
-                        <Icon type="navicon" size="32"></Icon>
-                    </i-button>
-                    <div class="layout-breadcrumb">
-                        <Breadcrumb></Breadcrumb>
-                    </div>
-                    <!--<div class="layout-right-top-tools">-->
-                    <!--<RightTopTools></RightTopTools>-->
+            <!--<div class="layout-header">-->
+                <!--<div class="layout-header">-->
+                    <!--<i-button class="layout-collapsing-leftmenu" type="text" @click="toggleClick">-->
+                        <!--<Icon type="navicon" size="32"></Icon>-->
+                    <!--</i-button>-->
+                    <!--<div class="layout-breadcrumb">-->
+                        <!--<Breadcrumb></Breadcrumb>-->
                     <!--</div>-->
-                </div>
-            </div>
+                    <!--&lt;!&ndash;<div class="layout-right-top-tools">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<RightTopTools></RightTopTools>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
 
             <div class="layout-content">
                 <div class="layout-content-main">
