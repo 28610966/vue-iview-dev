@@ -1,7 +1,7 @@
 <template>
 
     <Row type="flex">
-        <Col span="20">
+        <Col span="24">
         <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
             <Col span="16">
             <h1>{{title}}</h1>
@@ -15,47 +15,41 @@
         <Row>
                 <Col span="24">
                 <div style="float: right;">
-                    <Page :page-size="query.pageSize" :total="Users.list.data.total" :current="Users.list.data.current" size="small"
+                    <Page :page-size="query.pageSize" :total="Alerts.list.data.total" :current="Alerts.list.data.current" size="small"
                           @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
                 </Col>
                 <Col span="24">
-                <Table @on-sort-change="sortChange" size="small" :columns="columns" :data="Users.list.data.list"></Table>
+                <Table :no-filtered-data-text="noDataText" :no-data-text="noDataText" @on-sort-change="sortChange" size="small" :columns="columns" :data="Alerts.list.data.list"></Table>
 
                 </Col>
                 <Col span="24">
                 <div style="float: right;">
-                    <Page :page-size="query.pageSize" :total="Users.list.data.total" :current="Users.list.data.current" size="small"
+                    <Page :page-size="query.pageSize" :total="Alerts.list.data.total" :current="Alerts.list.data.current" size="small"
                           @on-change="changePage" @on-page-size-change="changePageSizer" show-total
                           show-sizer></Page>
                 </div>
                 </Col>
         </Row>
         </Col>
-        <Col span="4">
-        <Card>
-            <p slot="title">
-                Invite your team
-            </p>
-            <Button  @click="openModal" style="width:100%; text-align: left" icon="plus" type="success">Add Users</Button>
-        </Card>
+
         <Modal width="600px" v-model="modal" :title="modalTitle"
                :loading="loading"
-               @on-ok="saveUsers">
+               @on-ok="saveAlerts">
             <DynamicForm :dicts="dicts" :button="{enabled:false}"  ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
                 <Button size="large" @click="resetForm">reset</Button>
-                <Button type="primary" size="large" :loading="loading" @click="saveUsers">Submit</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveAlerts">Submit</Button>
             </div>
         </Modal>
         </Col>
     </Row>
 </template>
 <script>
-    import {VueUtil, FormUtil} from '../../../../libs';
-    import {DropMenuDecorator,DynamicForm} from '../../../common';
+    import {VueUtil, FormUtil} from '../../../libs';
+    import {DropMenuDecorator,DynamicForm} from '../../common';
     import _ from 'lodash';
 
     export default {
@@ -63,24 +57,23 @@
             DropMenuDecorator,DynamicForm
         },
         computed: {
-            ...VueUtil(this).select(['Users','Teams']).state(),
+            ...VueUtil(this).select(['Alerts']).state(),
         },
         methods: {
-            ...VueUtil(this).select(['Users','Teams']).actions(),
+            ...VueUtil(this).select(['Alerts']).actions(),
             openModal(){
-                this.modalTitle = "Add Users";
+                this.modalTitle = "Add Alerts";
                 this.modal = true;
                 this.loading = false;
-                VueUtil(this).select('Teams').list();
             },
-            saveUsers(){
+            saveAlerts(){
                 this.loading = true;
                 this.$refs['form'].validate({
                     ok: (data) => {
                         if(!!data.id)
-                            VueUtil(this).select('Users').update(data);
+                            VueUtil(this).select('Alerts').update(data);
                         else
-                            VueUtil(this).select('Users').save(data);
+                            VueUtil(this).select('Alerts').save(data);
                     }, err: () => {
                         this.loading = false;
                     }
@@ -93,17 +86,17 @@
                 this.$router.push(this.addBtn.path);
             },
 
-            deleteUsers(id){
+            deleteAlerts(id){
                 this.$Modal.confirm({
                     title: 'Confirem',
                     content: '<p>Are you sure?</p>',
                     onOk: () => {
-                        VueUtil(this).select('Users').delete(id);
+                        VueUtil(this).select('Alerts').delete(id);
                     }
                 });
             },
-            updateUsers(user){
-                VueUtil(this).select('Users').update(user);
+            updateAlerts(user){
+                VueUtil(this).select('Alerts').update(user);
             },
             sortChange({key,order}){
                 this.query = {...this.query, sortField:key, sortOrder:order};
@@ -111,13 +104,13 @@
             },
             changePage(page){
                 page ? this.query.current = page : null;
-                VueUtil(this).select('Users').list(this.query);
+                VueUtil(this).select('Alerts').list(this.query);
             },
             changePageSizer(pageSize){
                 this.query.pageSize = pageSize;
-                VueUtil(this).select('Users').list(this.query);
+                VueUtil(this).select('Alerts').list(this.query);
             },
-            listenUsers(data){
+            listenAlerts(data){
                 if (data.type === 'get') {
                     this.formValidate = data.data;
                     this.openModal();
@@ -137,36 +130,26 @@
                     }
                 }
             },
-            listenTeams(data){
-                if (!data.loading) {
-                    if (!data.error) {
-                        this.dicts.Teams = _.map(data.data, t => {
-                            return {value: t.id, label: t.name}
-                        });
-                    }
-                }
-            },
             operate(id){
                 var $id = id.split("/");
                 switch ($id[0]){
                     case 'view':
-                        this.$router.push(`/users/${$id[1]}`);
+                        this.$router.push(`/Alerts/${$id[1]}`);
                         break;
                     case 'edit':
-                        VueUtil(this).select('Users').get(_.parseInt($id[1]));
+                        VueUtil(this).select('Alerts').get(_.parseInt($id[1]));
                         break;
                     case 'delete':
-                        this.deleteUsers(_.parseInt($id[1]));
+                        this.deleteAlerts(_.parseInt($id[1]));
                         break;
                 }
             }
         },
         watch: {
-            'Users.get': 'listenUsers',
-            'Users.delete': 'listenUsers',
-            'Users.save': 'listenUsers',
-            'Users.update': 'listenUsers',
-            'Teams.list': 'listenTeams',
+            'Alerts.get': 'listenAlerts',
+            'Alerts.delete': 'listenAlerts',
+            'Alerts.save': 'listenAlerts',
+            'Alerts.update': 'listenAlerts',
         },
         // 挂载完毕请求数据
         mounted(){
@@ -175,37 +158,67 @@
         data(){
             const fields = [
                 {
-                    label: 'User',
-                    id: 'name',
+                    label: 'Status',
+                    id: 'status',
                     type:'input',
                     sortable:'custom',
                     rules:[{required:true}],
                     span:22,
                 }, {
-                    label: 'Email',
-                    id: 'Email',
+                    label: 'Severity',
+                    id: 'severity',
                     type:'input',
                     sortable:'custom',
                     span:22,
                 }, {
-                    label: 'Job Title',
-                    id: 'jobTitle',
+                    label: 'Summary',
+                    id: 'summary',
                     type:'input',
                     sortable:'custom',
                     span:22,
                 }, {
-                    label: 'Base Role',
-                    id: 'baseRole',
+                    label: 'Created',
+                    id: 'created',
                     type:'select',
                     options:'roles',
                     sortable:'custom',
                     span:22,
+                    filterRemote:(value, row)=>{
+                        console.log(value,row )
+                    },
+                    filters: [
+                        {
+                            label: '大于4000',
+                            value: 1
+                        },
+                        {
+                            label: '小于4000',
+                            value: 2
+                        }
+                    ],
+                    filterMultiple: false,
                 }, {
-                    label: 'Teams',
-                    id: 'teams',
-                    type:'select',
-                    options:'Teams',
-                    filterable: true,
+                    label: 'Related Incident',
+                    id: 'relatedIncident',
+                    type:'input',
+                    sortable:'custom',
+                    span:22,
+                }, , {
+                    label: 'Service',
+                    id: 'service',
+                    type:'input',
+                    sortable:'custom',
+                    span:22,
+                }, , {
+                    label: 'Integration',
+                    id: 'integration',
+                    type:'input',
+                    sortable:'custom',
+                    span:22,
+                }, , {
+                    label: 'Source',
+                    id: 'source',
+                    type:'input',
                     sortable:'custom',
                     span:22,
                 }
@@ -225,24 +238,18 @@
             return {
                 query,
                 dicts,
+                noDataText:'No alerts found with current filters.',
                 modal:false,
                 loading: false,
                 modalTitle:'',
-                title: 'Users on My Teams',
-                tab: 'Users',
-                addBtn: {title: "Add New Users", path: '/service_add',},
+                title: 'Alerts',
+                addBtn: {title: "Add New Alerts", path: '/service_add',},
                 fields: formUtil.fields(),
                 queryFields: formUtil.queryFields(),
                 formValidate: formUtil.forms(),
                 ruleValidate: formUtil.rules(),
                 columns: [
                     ...formUtil.columns(),
-                    {
-                        key: 'id',
-                        render: (h, params) => {
-                            return ( <DropMenuDecorator id={params.row.id} select={this.operate} title='Operate' list={rowMenuList}></DropMenuDecorator>);
-                        }
-                    }
                 ],
 
             }

@@ -13,7 +13,7 @@ const routers = [{
         }, {
             name: 'Alerts',
             path: '/alerts',
-            component: Pages.Nothing,
+            component: Pages.Alerts,
         }, {
             name: 'Configuration',
             path: '/configuration',

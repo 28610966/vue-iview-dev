@@ -21,7 +21,7 @@
                 </div>
                 </Col>
                 <Col span="24">
-                    <Table size="small" :columns="columns" :data="Teams.list.data.list"></Table>
+                    <Table @on-sort-change="sortChange" size="small" :columns="columns" :data="Teams.list.data.list"></Table>
                 </Col>
                 <Col span="24">
                 <div style="float: right;">
@@ -47,8 +47,8 @@
             <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveTeams">Submit</Button>
                 <Button size="large" @click="resetForm">reset</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveTeams">Submit</Button>
             </div>
         </Modal>
         </Col>
@@ -93,10 +93,17 @@
             },
 
             deleteTeams(id){
-                VueUtil(this).select('Teams').delete(id);
+                this.$Modal.confirm({
+                    title: 'Confirem',
+                    content: '<p>Are you sure?</p>',
+                    onOk: () => {
+                        VueUtil(this).select('Teams').delete(id);
+                    }
+                });
             },
-            updateTeams(user){
-                VueUtil(this).select('Teams').update(user);
+            sortChange({key,order}){
+                this.query = {...this.query, sortField:key, sortOrder:order};
+                this.changePage();
             },
             changePage(page){
                 page ? this.query.current = page : null;
@@ -162,7 +169,7 @@
                     label: 'Name',
                     id: 'name',
                     type:'input',
-                    sortable:true,
+                    sortable:'custom',
                     rules:[{required:true}],
                     span:24,
                     formIndex:1
@@ -174,7 +181,7 @@
                     filterable:true,
                     options:'escalationPolicies',
                     clearable:true,
-                    sortable:true,
+                    sortable:'custom',
                     span:24,
                     formIndex:2
                 },

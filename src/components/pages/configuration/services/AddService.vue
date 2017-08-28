@@ -10,9 +10,8 @@
         <p style="padding:5px 0px;">
             A service may represent an application, component or team you wish to open incidents against.</p>
         <p>
-        <h3>General Settings</h3></p>
         <div>
-            <DynamicForm :dicts="dicts" ref="form" :fields="fields" :ruleValidate="ruleValidate"
+            <DynamicForm :loading="loading" :dicts="dicts" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate" :labelWidth="150" :button="button"></DynamicForm>
         </div>
         </Col>
@@ -78,7 +77,8 @@
             },
         },
         mounted(){
-           VueUtil(this).select('Services').get(this.$route.params.id);
+            if(this.$route.params.id)
+                VueUtil(this).select('Services').get(this.$route.params.id);
         },
         watch: {
             'Services.get': 'listenServices',
@@ -95,6 +95,7 @@
                 {
                     span: 18,
                     label: 'Name',
+                    primaryTitle:'General Settings',
                     type: 'input',
                     style: {width: '400px'},
                     id: 'name',
@@ -112,6 +113,7 @@
                     ]
                 }, {
                     span: 18,
+                    primaryTitle:'Integration Settings',
                     label: 'Integration Type',
                     type: 'radio',
                     style: {display: 'flex', flexDirection: 'column'},
@@ -134,6 +136,7 @@
                     id: 'integrationEmail',
                 }, {
                     span: 18,
+                    primaryTitle:'Incident Settings',
                     label: 'Escalation Policy',
                     style: {width: '400px'},
                     type: 'input',
@@ -151,7 +154,14 @@
                     type: 'checkbox',
                     options: "IncidentTimeouts",
                     id: 'incidentTimeouts',
-                },
+                },{
+                    primaryTitle:'Incident Behavior',
+                    secondaryTitle:'PagerDuty receives events from your monitoring systems and can then create incidents in different ways.',
+                    type: "radio",
+                    id: 'incidentBehavior',
+                    style: {display: 'flex', flexDirection: 'column'},
+                    options:"IncidentBehavior"
+                }
             ]
             const formUtil = FormUtil(this);
             formUtil.fields(fields);
@@ -165,11 +175,16 @@
                 IncidentTimeouts:[
                     {value: 'Acknowledgement timeout', label: 'Acknowledgement timeout'},
                     {value: 'Auto-resolution', label: 'Auto-resolution'},
+                ],
+                IncidentBehavior:[
+                    {label:'Create alerts and incidents', value:'1', description:'An event will create an alert and then add it to a new incident. These incidents can be merged.'},
+                    {label:'Create incidents', value:'2' ,description:'An event will create an incident that cannot be merged.'},
                 ]
             }
             return {
                 fields: formUtil.fields(),
                 dicts,
+                loading:false,
                 formValidate: formUtil.forms(),
                 ruleValidate: formUtil.rules(),
                 button: {

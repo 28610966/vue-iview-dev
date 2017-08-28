@@ -30,7 +30,7 @@
                         </div>
                         </Col>
                         <Col span="24">
-                        <Table size="small" :columns="columns" :data="Services.list.data.list"></Table>
+                        <Table @on-sort-change="sortChange" size="small" :columns="columns" :data="Services.list.data.list"></Table>
 
                         </Col>
                         <Col span="24">
@@ -109,10 +109,17 @@
             },
 
             deleteServices(id){
-                VueUtil(this).select('Services').delete(id);
+                this.$Modal.confirm({
+                    title: 'Confirem',
+                    content: '<p>Are you sure?</p>',
+                    onOk: () => {
+                        VueUtil(this).select('Services').delete(id);
+                    }
+                });
             },
-            updateServices(user){
-                VueUtil(this).select('Services').update(user);
+            sortChange({key,order}){
+                this.query = {...this.query, sortField:key, sortOrder:order};
+                this.changePage();
             },
             changePage(page){
                 page ? this.query.current = page : null;
@@ -166,9 +173,9 @@
         data(){
             let fields = [
                 {
-                    label: 'Service',
+                    label: 'Service Name',
                     id: 'name',
-                    sortable:true,
+                    sortable:'custom',
                     width:'200px',
                     render: (h, params) => {
                         return (<div><a href='javascript:void()' onClick={this.operate.bind(this,`view/${params.row.id}`)}>{params.row.name}</a><p>{params.row.description}</p></div>);
@@ -176,7 +183,7 @@
                 }, {
                     label: 'Incidents',
                     id: 'integrationType',
-                    sortable:true,
+                    sortable:'custom',
                 }, {
                     label: 'Last Incident',
                     id: 'Last Incident',

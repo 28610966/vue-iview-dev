@@ -3,6 +3,11 @@
         <Row>
             <i-col :style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields"
                    :span="field.span || 12">
+                <div v-if="field.primaryTitle" style="margin-bottom: 10px;">
+                    <h2 >{{field.primaryTitle}}</h2>
+                    <p v-if="field.secondaryTitle">{{field.secondaryTitle}}</p>
+                </div>
+
                 <Form-item :label="field.label" :prop="field.id">
                     <input type="hidden" v-if="field.type === 'hidden'" v-model="formValidate[field.id]"/>
                     <Input :style="field.style"  v-if="field.type === 'input'" v-model="formValidate[field.id]"
@@ -19,10 +24,16 @@
                         <Option v-if="dicts && dicts[field.options]"  v-for="option in dicts[field.options]" :value="option.value">{{option.label}}</Option>
                     </Select>
                     <Radio-group :style="field.style" v-else-if="field.type ==='radio'" v-model="formValidate[field.id]">
-                        <Radio  v-if="dicts && dicts[field.options]" :label="option.value" v-for="option in dicts[field.options]">{{option.label}}</Radio>
+                        <div v-if="dicts && dicts[field.options]" v-for="option in dicts[field.options]">
+                            <Radio :label="option.value" >{{option.label}}</Radio>
+                            <p style="margin-left: 20px;" v-if="option.description">{{option.description}}</p>
+                        </div>
                     </Radio-group>
                     <Checkbox-group :style="field.style"  v-else-if="field.type ==='checkbox'" v-model="formValidate[field.id]">
-                        <Checkbox v-if="dicts && dicts[field.options]" :label="option.value" v-for="option in dicts[field.options]">{{option.label}}</Checkbox>
+                        <div v-if="dicts && dicts[field.options]" v-for="option in dicts[field.options]">
+                        <Checkbox :label="option.value">{{option.label}}</Checkbox>
+                            <p style="margin-left: 20px;" v-if="option.description">{{option.description}}</p>
+                        </div>
                     </Checkbox-group>
                     <Date-picker v-else-if="field.type ==='date'" type="date" :placeholder="`please select${field.label}`"
                                  v-model="formValidate[field.id]"></Date-picker>
@@ -35,9 +46,9 @@
             </i-col>
         </Row>
         <Form-item v-if="button.enable">
-            <Button type="primary" @click="button.submit">Submit</Button>
-            <Button type="error" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
-            <Button type="ghost" @click="button.cancel" style="margin-left: 8px">Cancel</Button>
+            <Button :loading="loading" type="primary" @click="button.submit">Submit</Button>
+            <Button :disabled="loading" type="error" @click="handleReset('formValidate')" style="margin-left: 8px">Reset</Button>
+            <Button :disabled="loading" type="ghost" @click="button.cancel" style="margin-left: 8px">Cancel</Button>
         </Form-item>
     </Form>
 </template>
@@ -51,6 +62,7 @@
             'labelWidth',
             'button',
             'dicts',
+            'loading',
         ],
         data () {
             return {}

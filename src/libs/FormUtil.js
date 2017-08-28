@@ -12,7 +12,8 @@ function util(context) {
             current: 1,
             pageSize: 10,
             filter: null,
-            sortInfo: null,
+            sortField: null,
+            sortOrder: null,
             ..._q
         };
     }

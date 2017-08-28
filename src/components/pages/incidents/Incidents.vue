@@ -43,7 +43,7 @@
                                     <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current" :pageSize="query.pageSize"></IncidentsTools>
                                 </Col>
                                 <Col span="24">
-                                        <Table @on-selection-change="selectionChange" size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
+                                        <Table @on-sort-change="sortChange" @on-selection-change="selectionChange" size="small" :columns="columns" :data="Incidents.list.data.list"></Table>
                                 </Col>
                                 <Col span="24">
                                     <IncidentsTools :changePageSizer="changePageSizer" :changePage="changePage" :selectRow="selectRow" :total="Incidents.list.data.total" :current="Incidents.list.data.current" :pageSize="query.pageSize"></IncidentsTools>
@@ -96,8 +96,8 @@
             <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
                          :formValidate="formValidate"></DynamicForm>
             <div slot="footer">
-                <Button type="primary" size="large" :loading="loading" @click="saveIncidents">Submit</Button>
                 <Button size="large" @click="resetForm">Reset</Button>
+                <Button type="primary" size="large" :loading="loading" @click="saveIncidents">Submit</Button>
             </div>
         </Modal>
     </div>
@@ -153,7 +153,11 @@
             },
             changePageSizer(pageSize){
                 this.query.pageSize = pageSize;
-                VueUtil(this).select('Incidents').list(this.query);
+                this.changePage();
+            },
+            sortChange({key,order}){
+                this.query = {...this.query, sortField:key, sortOrder:order};
+                this.changePage();
             },
             listenIncidents(data){
                 if (data.type === 'get') {
@@ -199,20 +203,19 @@
         },
         props: {},
         data(){
-
-            let fields = [
+            const fields = [
                 {type: 'selection',width: 60,align: 'center',scope:['column']},
-                {id:"Status",label:"Status", type:"input", sortable:true, span:22, formIndex:5},
-                {id:"Urgency",label:"Urgency", type:"input", sortable:true, span:22, scope:['column']},
-                {id:"Title",label:"Title", type:"input", sortable:true, span:22, formIndex:3,rules:[{required:true}]},
-                {id:"Created",label:"Created", type:"hidden", sortable:true, span:22,},
-                {id:"Service",label:"Service", type:"select", sortable:true, span:22, formIndex:1, options:"Services"},
-                {id:"Assigned",label:"Assigned To", type:"input", sortable:true, span:22, formIndex: 4},
-                {id:"Description",label:"Description", type:"textarea", sortable:true, span:22, formIndex:6 ,scope:['form']},
+                {id:"Status",label:"Status", type:"input", sortable:"custom", span:22, formIndex:5},
+                {id:"Urgency",label:"Urgency", type:"input", sortable:"custom", span:22, scope:['column']},
+                {id:"Title",label:"Title", type:"input", sortable:"custom", span:22, formIndex:3,rules:[{required:true}]},
+                {id:"Created",label:"Created", type:"hidden", sortable:"custom", span:22,},
+                {id:"Service",label:"Service", type:"select", sortable:"custom", span:22, formIndex:1, options:"Services"},
+                {id:"Assigned",label:"Assigned To", type:"input", sortable:"custom", span:22, formIndex: 4},
+                {id:"Description",label:"Description", type:"textarea", sortable:"custom", span:22, formIndex:6 ,scope:['form']},
             ]
-            let formUtil = FormUtil(this);
+            const formUtil = FormUtil(this);
             formUtil.fields(fields);
-            let query = formUtil.defaultQuery();
+            const query = formUtil.defaultQuery();
             return {
                 selectRow: true,
                 assigendToMe: false,

@@ -3,6 +3,8 @@ export {default as Fuck } from './Fuck';
 export {default as Home } from './Home';
 export {default as NoMatchPage } from './NoMatchPage';
 export {default as Nothing } from './Nothing';
+export {default as Alerts } from './alerts/Alerts';
+export {default as Reports } from './analytics/Reports';
 export {default as Schedules } from './configuration/Schedules';
 export {default as AddService } from './configuration/services/AddService';
 export {default as ServiceDetail } from './configuration/services/ServiceDetail';

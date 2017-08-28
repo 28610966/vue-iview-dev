@@ -6,6 +6,8 @@ import Routers from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
+import Echarts from 'echarts';
+import 'iview/dist/styles/iview.css';
 import 'iview/dist/styles/iview.css';
 
 import '!style-loader!css-loader!less-loader!./themes/index.less'

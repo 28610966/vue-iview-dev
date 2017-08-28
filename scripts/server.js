@@ -116,7 +116,7 @@ function mockData() {
                         value = value.sortBy(sortField)
                     }
 
-                    if (sortOrder && sortOrder === 'ascend') {
+                    if (sortOrder && (sortOrder === 'ascend' || sortOrder === 'asc')) {
                         log('sortOrder:', sortOrder);
                         value = value.reverse()
                     }

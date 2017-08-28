@@ -1,5 +1,6 @@
 //Do not modify this file, it will be auto generated
 import vuexDecorator from '../libs/vuexDecorator';
+import  Alerts from './alerts/Alerts';
 import  Breadcrumb from './breadcrumb/Breadcrumb';
 import  Services from './configuration/Services';
 import  Teams from './configuration/Teams';
@@ -9,6 +10,7 @@ import  Dict from './system/Dict';
 import  ExternalPage from './system/ExternalPage';
 
 export default {
+    Alerts: vuexDecorator('Alerts',Alerts),
     Breadcrumb: vuexDecorator('Breadcrumb',Breadcrumb),
     Services: vuexDecorator('Services',Services),
     Teams: vuexDecorator('Teams',Teams),
