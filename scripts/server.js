@@ -108,6 +108,7 @@ function mockData() {
                             else
                                 return m;
                         });
+                        condition = _.omit(condition,'lang')
                         value = value.filter(condition)
                     }
                     total = value.size();

@@ -1,4 +1,4 @@
-import * as Pages from './components/pages';
+import Pages from './components/pages';
 
 const routers = [
     {

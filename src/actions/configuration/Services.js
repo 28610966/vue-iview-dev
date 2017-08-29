@@ -25,7 +25,7 @@ export default {
             url: (payload) => `/api/services`,
         },
     },
-    // state: {},
-    // mutations: {},
-    // getters: {}
+    state: {},
+    mutations: {},
+    getters: {}
 }

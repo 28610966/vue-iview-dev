@@ -25,18 +25,18 @@ const menus = [{
             "id": 10,
             "title": "Services",
             "path": "/services"
-        }, {"id": 11, "title": "Escalation Policies", "path": "/event_source_management"}, {
+        }, {"id": 11, "title": "EscalationPolicies", "path": "/event_source_management"}, {
             "id": 12,
             "title": "Users",
             "path": "/users"
         }, {
             "id": 13, "title": "Teams", "path": "/teams"
         }, {
-            "id": 14, "title": "API Access", "path": "/api_access"
+            "id": 14, "title": "APIAccess", "path": "/api_access"
         }, {
             "id": 15, "title": "Extensions", "path": "/extensions"
         }, {
-            "id": 16, "title": "Account Settings", "path": "/account_settings"
+            "id": 16, "title": "AccountSettings", "path": "/account_settings"
         }, {"id": 17, "title": "Analytics", "path": "/analytics"}
     ]
 }, {
@@ -54,7 +54,7 @@ const menus = [{
     }]
 }, {
     "id": 21,
-    "title": "Command Console",
+    "title": "CommandConsole",
     "group": "opt",
     "path":"/command_console",
     "role": "5",

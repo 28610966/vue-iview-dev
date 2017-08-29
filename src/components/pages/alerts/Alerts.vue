@@ -242,7 +242,7 @@
                 modal:false,
                 loading: false,
                 modalTitle:'',
-                title: 'Alerts',
+                title: this.$t('h.Alerts'),
                 addBtn: {title: "Add New Alerts", path: '/service_add',},
                 fields: formUtil.fields(),
                 queryFields: formUtil.queryFields(),

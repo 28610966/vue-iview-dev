@@ -1,95 +1,8 @@
 <style scoped>
-    .layout {
-        height: 100%;
-        background: #f5f7f9;
-        background: #1c2438;
-        position: relative;
-        box-flex: 1;
-        /*overflow: hidden;*/
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-    }
 
-    .layout-right {
-        box-sizing: content-box;
-        height: 300px;
-        flex: 1;
-    }
-
-    .router-link-active {
-        color: #ffffff;
-    }
-
-    .layout-collapsing-leftmenu {
-        float: left;
-    }
-
-    .layout-breadcrumb {
-        height: 100%;
-        line-height: 50px;
-        width: 800px;
-        float: left;
-    }
-
-    .layout-content {
-        height: calc('100% - 100px');
-        overflow: auto;
-        /*margin: 15px;*/
-        background: #fff;
-    }
-
-    .layout-copy {
-        text-align: center;
-        padding: 10px 0 20px;
-        color: #9ea7b4;
-    }
-
-    .layout-content-main {
-        padding: 10px;
-        min-height: 400px;
-    }
-
-    .layout-header {
-        height: 50px;
-        background: #fff;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
-        margin-bottom: 1px;
-    }
-
-    .logo {
-        font-size: 32px;
-        font-weight: 700;
-        color: #19be6b;
-        padding: 0px 10px;
-    }
-
-    .layout-ceiling-main a {
-        color: #9ba7b5;
-    }
-
-    .layout-hide-text .layout-text {
-        display: none;
-    }
-
-    .layout-right-top-tools {
-        height: 100%;
-        line-height: 50px;
-    }
-
-    .layout-right-top-tools .ivu-dropdown {
-        height: 100%;
-        line-height: 50px;
-        float: right;
-        margin-right: 10px;
-    }
-
-    .ivu-col {
-        transition: width .2s ease-in-out;
-    }
 </style>
 <template>
-    <div class="layout">
+    <div class="home">
         <!--<Affix>-->
         <div class="layout-menu-left">
             <Row type="flex">
@@ -100,13 +13,21 @@
                 <Navigation></Navigation>
                 </Col>
                 <Col span="4" class="right">
-                <Dropdown placement="bottom-end"  @on-click="rightMenuClick">
+                <div class="switch-lang" @click="switchLang">{{lang}}</div>
+                <Dropdown placement="bottom-end" @on-click="rightMenuClick">
                     <a href="javascript:void(0)">
                         {{Users.loginUser.data.firstname}}
                     </a>
                     <Dropdown-menu slot="list">
                         <Dropdown-item name="myProfile">My profile</Dropdown-item>
-                        <Dropdown-item name="logout">Log out</Dropdown-item>
+                        <Dropdown placement="left-start" @on-click="choseLang">
+                            <div>I18n</div>
+                            <DropdownMenu slot="list">
+                                <DropdownItem name="zh-CN">chinese</DropdownItem>
+                                <DropdownItem name="en-US">english</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown-item name="logout">Logout</Dropdown-item>
                     </Dropdown-menu>
                 </Dropdown>
                 </Col>
@@ -138,6 +59,7 @@
 </template>
 <script>
     import _ from 'lodash';
+    import Vue from 'vue';
     import {VueUtil, FormUtil} from '../../libs';
     import Navigation from '../frame/Navigation.vue'
     import Breadcrumb from '../frame/Breadcrumb.vue'
@@ -150,6 +72,7 @@
 
         data () {
             return {
+                lang: '',
                 spanLeft: 5,
                 spanRight: 19
             }
@@ -161,12 +84,22 @@
             }
         },
         mounted(){
+            this.switchLang();
             VueUtil(this).select('Users').action('loginUser');
             if (!store.get('token'))
                 this.$router.push('login');
         },
         methods: {
             ...VueUtil(this).select(['Users']).actions(),
+            switchLang(){
+                if(this.lang === 'Chinese'){
+                    Vue.config.lang = 'en-US';
+                    this.lang = 'English';
+                }else{
+                    Vue.config.lang = 'zh-CN';
+                    this.lang = 'Chinese';
+                }
+            },
             toggleClick () {
                 if (this.spanLeft === 5) {
                     this.spanLeft = 2;
@@ -180,7 +113,7 @@
                 if (name === 'logout') {
                     store.set('login', null);
                     this.$router.push('/login');
-                }else if(name ==='myProfile'){
+                } else if (name === 'myProfile') {
                     this.$router.push(`/users/${this.Users.loginUser.data.username}`)
                 }
             }

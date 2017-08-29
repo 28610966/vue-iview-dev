@@ -1,15 +1,15 @@
 <template>
-    <Submenu v-if="menu.children" :title="menu.title" :name="menu.id">
+    <Submenu v-if="menu.children" :name="menu.id">
         <template slot="title">
             <Icon :type="menu.icon"></Icon>
-            {{menu.title}}
+            {{$t('h.'+menu.title)}}
         </template>
         <Menu-item :name="m.path" v-for="m in menu.children" :key="m.title">
-            {{m.title}}
+            {{$t('h.'+m.title)}}
         </Menu-item>
     </Submenu>
     <Menu-item v-else :name="menu.path">
-        {{menu.title}}
+        {{$t('h.'+menu.title)}}
     </Menu-item>
 </template>
 <script>

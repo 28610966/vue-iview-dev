@@ -7,14 +7,14 @@
     <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
         <Col span="20">
         <Tabs :animated="false">
-            <Tab-pane label="Incidents">
+            <Tab-pane :label="$t('h.incidents')">
                 <ServiceIncidents></ServiceIncidents>
             </Tab-pane>
-            <Tab-pane label="Integrations">
+            <Tab-pane :label="$t('h.integrations')">
                 <ServiceIntegrations></ServiceIntegrations>
 
             </Tab-pane>
-            <Tab-pane label="Settings">
+            <Tab-pane :label="$t('h.settings')">
                 <ServiceSettings></ServiceSettings>
             </Tab-pane>
         </Tabs>
@@ -22,10 +22,10 @@
         <Col span="4">
         <div class="service-buttons">
             <Button icon="edit">{{$t('button.edit',{msg:$t('h.service')})}}</Button>
-            <Button icon="pause">Disable Service</Button>
+            <Button icon="pause">{{$t('button.disabled',{msg:$t('h.service')})}}</Button>
             <Button icon="clock">Schedule Maintenance</Button>
-            <Button icon="plus">New Incident</Button>
-            <Button icon="close"> Delete Service</Button>
+            <Button icon="plus">{{$t('button.new',{msg:$t('h.incidents')})}}</Button>
+            <Button icon="close">{{$t('button.delete',{msg:$t('h.service')})}}</Button>
         </div>
         <Card>
             <p slot="title">
