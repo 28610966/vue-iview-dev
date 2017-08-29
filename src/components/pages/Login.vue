@@ -26,7 +26,8 @@
             </div>
             <div class="footer">
                 <Button :loading="Users.login.loading" class="btn-login" type="primary" @click="validate('loginForm')">Login</Button>
-                <a class="forget">forget password</a>
+                <!--<div class="dev-messgae"></div>-->
+                <a class="forget" v-html="devMessage"></a>
             </div>
         </Card>
     </div>
@@ -45,6 +46,7 @@
         props: {},
         data(){
             return {
+                devMessage: process.env.NODE_ENV !== 'production' ? 'usr: admin<br/>pwd:000000':'<a>forget</a>',
                 loginModel: {
                     username: '',
                     password: ''
