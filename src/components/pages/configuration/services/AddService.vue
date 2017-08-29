@@ -163,8 +163,7 @@
                     options:"IncidentBehavior"
                 }
             ]
-            const formUtil = FormUtil(this);
-            formUtil.fields(fields);
+            const formUtil = FormUtil(this).initFields(fields);
             const dicts = {
                 IntegrationType:[
                     {value: '1', label: 'Select Tools'},
@@ -182,9 +181,9 @@
                 ]
             }
             return {
-                fields: formUtil.fields(),
                 dicts,
                 loading:false,
+                fields: formUtil.fields(),
                 formValidate: formUtil.forms(),
                 ruleValidate: formUtil.rules(),
                 button: {

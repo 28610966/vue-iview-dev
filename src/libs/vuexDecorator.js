@@ -4,6 +4,7 @@
  */
 import _ from 'lodash';
 import store from 'store';
+import Vue from 'vue';
 import util from '../libs/util';
 
 export default (scope, vuex) => {
@@ -32,7 +33,8 @@ export default (scope, vuex) => {
             if (action.method === 'get')
                 url = util.stitchingParams(url, payload);
             util.headers({
-                Authorization: store.get('token')
+                Authorization: store.get('token'),
+                Lang: Vue.config.lang,
             }).ajax({
                 url: url,
                 method: action.method || 'get',

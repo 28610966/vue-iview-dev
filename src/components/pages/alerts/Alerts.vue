@@ -4,7 +4,7 @@
         <Col span="24">
         <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
             <Col span="16">
-            <h1>{{title}}</h1>
+            <h1>{{$t('h.Alerts')}}</h1>
             </Col>
             <Col span="8">
             <div style="text-align: right"><Input icon="search" placeholder="Search..."
@@ -242,7 +242,6 @@
                 modal:false,
                 loading: false,
                 modalTitle:'',
-                title: this.$t('h.Alerts'),
                 addBtn: {title: "Add New Alerts", path: '/service_add',},
                 fields: formUtil.fields(),
                 queryFields: formUtil.queryFields(),

@@ -1,4 +1,9 @@
 export default {
+    date:{
+        date:'YYYY-MM-DD',
+        dateTime:'YYYY-MM-DD HH:mm:ss',
+        time:'HH:mm:ss',
+    },
     button: {
         add: "添加{msg}",
         new: "新建{msg}",

@@ -42,7 +42,7 @@ util.stitchingParams = (url,payload) => {
         } else {
             return k + "=" + payload[k]
         }
-    }).filter(m => m !== null).concat('lang='+Vue.config.lang).join("&");
+    }).filter(m => m !== null).join("&");
     let s = url + ((params === "") ? "" : ("?" + params));
     if (process.env.NODE_ENV === `development`)
         console.log(s);

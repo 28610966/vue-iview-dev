@@ -7,7 +7,7 @@
             <Col span="5">
                 <Row>
                     <Col span="24">
-                        <Button type="success" icon="plus" style="width:100%;text-align: left;"  @click="openModal">New Incident</Button>
+                        <Button type="success" icon="plus" style="width:100%;text-align: left;"  @click="openModal">{{$t('button.new',{msg:$t('h.Incidents')})}}</Button>
                     </Col>
                     <Col span="24">
                         <Card style="margin: 5px 0px;">

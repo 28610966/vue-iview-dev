@@ -20,35 +20,13 @@
                     </a>
                     <Dropdown-menu slot="list">
                         <Dropdown-item name="myProfile">My profile</Dropdown-item>
-                        <Dropdown placement="left-start" @on-click="choseLang">
-                            <div>I18n</div>
-                            <DropdownMenu slot="list">
-                                <DropdownItem name="zh-CN">chinese</DropdownItem>
-                                <DropdownItem name="en-US">english</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
                         <Dropdown-item name="logout">Logout</Dropdown-item>
                     </Dropdown-menu>
                 </Dropdown>
                 </Col>
             </Row>
         </div>
-        <!--</Affix>-->
         <div class="layout-right">
-            <!--<div class="layout-header">-->
-            <!--<div class="layout-header">-->
-            <!--<i-button class="layout-collapsing-leftmenu" type="text" @click="toggleClick">-->
-            <!--<Icon type="navicon" size="32"></Icon>-->
-            <!--</i-button>-->
-            <!--<div class="layout-breadcrumb">-->
-            <!--<Breadcrumb></Breadcrumb>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;<div class="layout-right-top-tools">&ndash;&gt;-->
-            <!--&lt;!&ndash;<RightTopTools></RightTopTools>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <!--</div>-->
-            <!--</div>-->
-
             <div class="layout-content">
                 <div class="layout-content-main">
                     <router-view></router-view>

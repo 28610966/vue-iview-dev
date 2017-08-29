@@ -21,11 +21,11 @@
         </Col>
         <Col span="4">
         <div class="service-buttons">
-            <Button icon="edit">{{$t('button.edit',{msg:$t('h.service')})}}</Button>
-            <Button icon="pause">{{$t('button.disabled',{msg:$t('h.service')})}}</Button>
+            <Button icon="edit">{{$t('button.edit',{msg:$t('h.Service')})}}</Button>
+            <Button icon="pause">{{$t('button.disabled',{msg:$t('h.Service')})}}</Button>
             <Button icon="clock">Schedule Maintenance</Button>
-            <Button icon="plus">{{$t('button.new',{msg:$t('h.incidents')})}}</Button>
-            <Button icon="close">{{$t('button.delete',{msg:$t('h.service')})}}</Button>
+            <Button icon="plus">{{$t('button.new',{msg:$t('h.Incidents')})}}</Button>
+            <Button icon="close">{{$t('button.delete',{msg:$t('h.Service')})}}</Button>
         </div>
         <Card>
             <p slot="title">
