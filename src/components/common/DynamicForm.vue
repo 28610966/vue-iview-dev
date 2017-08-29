@@ -1,7 +1,9 @@
 <template>
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="labelWidth || 80">
         <Row>
-            <i-col :style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields"
+            <i-col v-for="field in fields"
+                   :style="{display:field.type === 'hidden'?'none':'block'}" class
+                   :key="field.id"
                    :span="field.span || 12">
                 <div v-if="field.primaryTitle" style="margin-bottom: 10px;">
                     <h2 >{{field.primaryTitle}}</h2>
@@ -10,38 +12,55 @@
 
                 <Form-item :label="field.label" :prop="field.id">
                     <input type="hidden" v-if="field.type === 'hidden'" v-model="formValidate[field.id]"/>
-                    <Input :style="field.style"  v-if="field.type === 'input'" v-model="formValidate[field.id]"
-                           :placeholder="`please input ${field.label}`"></Input>
-                    <Select :ref="'select_'+field.id" :style="field.style"  v-else-if="field.type ==='select'" v-model="formValidate[field.id]"
+                    <Input v-if="field.type === 'input'"
+                           v-model="formValidate[field.id]"
+                           :style="field.style"
+                           :placeholder="field.placeholder || `please input ${field.label}`"></Input>
+                    <Select v-else-if="field.type ==='select'"
+                            v-model="formValidate[field.id]"
+                            :style="field.style"
+                            :ref="'select_'+field.id"
                             :initialValue="field.initialValue || (field.multiple?[]:null)"
-                            :placeholder="`please input${field.label}`"
+                            :placeholder="field.placeholder || `please input ${field.label}`"
                             :clearable="field.clearable || true"
                             :filterable="field.filterable || false"
                             :multiple="field.multiple || false"
                             :remote="field.remote || false"
                             :remote-method="field.remoteMethod || null"
                         >
-                        <Option v-if="dicts && dicts[field.options]"  v-for="option in dicts[field.options]" :value="option.value">{{option.label}}</Option>
+                        <Option v-if="dicts && dicts[field.options]"
+                                v-for="option in dicts[field.options]"
+                                :key="option.id"
+                                :value="option.value">{{option.label}}</Option>
                     </Select>
-                    <Radio-group :style="field.style" v-else-if="field.type ==='radio'" v-model="formValidate[field.id]">
-                        <div v-if="dicts && dicts[field.options]" v-for="option in dicts[field.options]">
+                    <Radio-group v-else-if="field.type ==='radio'"
+                                 v-model="formValidate[field.id]"
+                                 :style="field.style" >
+                        <div v-if="dicts && dicts[field.options]"
+                             v-for="option in dicts[field.options]"
+                             :key="option.value">
                             <Radio :label="option.value" >{{option.label}}</Radio>
                             <p style="margin-left: 20px;" v-if="option.description">{{option.description}}</p>
                         </div>
                     </Radio-group>
-                    <Checkbox-group :style="field.style"  v-else-if="field.type ==='checkbox'" v-model="formValidate[field.id]">
-                        <div v-if="dicts && dicts[field.options]" v-for="option in dicts[field.options]">
+                    <Checkbox-group v-else-if="field.type ==='checkbox'"
+                                    v-model="formValidate[field.id]"
+                                    :style="field.style">
+                        <div v-if="dicts && dicts[field.options]"
+                             v-for="option in dicts[field.options]"
+                             :key="option.value"
+                        >
                         <Checkbox :label="option.value">{{option.label}}</Checkbox>
                             <p style="margin-left: 20px;" v-if="option.description">{{option.description}}</p>
                         </div>
                     </Checkbox-group>
-                    <Date-picker v-else-if="field.type ==='date'" type="date" :placeholder="`please select${field.label}`"
+                    <Date-picker v-else-if="field.type ==='date'" type="date" :placeholder="field.placeholder || `please select ${field.label}`"
                                  v-model="formValidate[field.id]"></Date-picker>
-                    <Time-picker v-else-if="field.type ==='time'" type="time" :placeholder="`please select${field.label}`"
+                    <Time-picker v-else-if="field.type ==='time'" type="time" :placeholder="field.placeholder || `please select ${field.label}`"
                                  v-model="formValidate[field.id]"></Time-picker>
                     <Input :style="field.style"  v-else-if="field.type ==='textarea'" v-model="formValidate[field.id]" type="textarea"
                            :autosize="{minRows: 2,maxRows: 5}"
-                           placeholder="please input..."></Input>
+                           :placeholder="field.placeholder || `please input ${field.label}`"></Input>
                 </Form-item>
             </i-col>
         </Row>

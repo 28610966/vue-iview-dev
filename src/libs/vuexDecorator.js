@@ -3,6 +3,7 @@
  * 用于将 简化版 vuex 转换成 标准 vuex
  */
 import _ from 'lodash';
+import store from 'store';
 import util from '../libs/util';
 
 export default (scope, vuex) => {
@@ -30,17 +31,23 @@ export default (scope, vuex) => {
             let url = action.url(payload) || '/';
             if (action.method === 'get')
                 url = util.stitchingParams(url, payload);
-
-            util.ajax({
+            util.headers({
+                Authorization: store.get('token')
+            }).ajax({
                 url: url,
                 method: action.method || 'get',
                 data: payload,
+
             }).then(function (res) {
-                commit(`set_${scope}_${key}`, {
-                    loading: false,
-                    error: res.errorMsg,
-                    data: res.data.content || 'data format error!'
-                });
+                if (action.format) {
+                    commit(`set_${scope}_${key}`, action.format(res));
+                } else {
+                    commit(`set_${scope}_${key}`, {
+                        loading: false,
+                        error: res.errorMsg,
+                        data: res.data.content || 'data format error!'
+                    });
+                }
             }).catch(function (err) {
                 console.log(err);
                 commit(`set_${scope}_${key}`, {

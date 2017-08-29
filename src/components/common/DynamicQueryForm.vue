@@ -1,7 +1,7 @@
 <template>
     <Form ref="formSearch" :model="formSearch" :label-width="80">
         <Row>
-            <i-col :style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields"
+            <i-col :style="{display:field.type === 'hidden'?'none':'block'}" class v-for="field in fields" :key="field.id"
                    :span="6">
                 <Form-item :label="field.label" :prop="field.id">
                     <Input type="hidden" v-if="field.type === 'hidden'" v-model="formSearch[field.id]"></Input>
@@ -12,14 +12,16 @@
                             :filterable="field.filterable || false"
                             v-else-if="field.type ==='select' || field.type ==='radio' || field.type ==='checkbox'" v-model="formSearch[field.id]"
                             :placeholder="`请输入${field.label}`">
-                        <Option v-for="option in field.options" :value="option.value">{{option.label}}</Option>
+                        <Option v-for="option in field.options" :key="option.value" :value="option.value">{{option.label}}</Option>
                     </Select>
                     <Date-picker v-else-if="field.type ==='date'" type="date" :placeholder="`请选择${field.label}`"
                                  v-model="formSearch[field.id]"></Date-picker>
                     <Time-picker v-else-if="field.type ==='time'" type="time" :placeholder="`请选择${field.label}`"
                                  v-model="formSearch[field.id]"></Time-picker>
                     <Checkbox-group v-else-if="field.type ==='checkbox'" v-model="formSearch[field.id]">
-                        <Checkbox :label="option.value" v-for="option in field.options">{{option.label}}</Checkbox>
+                        <Checkbox :label="option.value"
+                                  v-for="option in field.options"
+                                  :key="option.value">{{option.label}}</Checkbox>
                     </Checkbox-group>
                     <Input v-else-if="field.type ==='textarea'" v-model="formSearch[field.id]" type="textarea"
                            :autosize="{minRows: 2,maxRows: 5}"

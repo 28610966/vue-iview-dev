@@ -22,6 +22,9 @@ function util(_context, defaultEntity) {
     this.action = (action,payload) =>{
         if (_.isFunction(context[`${entity}_${action}`]))
             context[`${entity}_${action}`].call(this, payload);
+        else{
+            console.log(`%c not find action ${entity}_${action}]! please verify action name!`, "color:red")
+        }
         return this;
     }
     this.save = (payload) => {

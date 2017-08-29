@@ -4,7 +4,7 @@
             <Icon :type="menu.icon"></Icon>
             {{menu.title}}
         </template>
-        <Menu-item :name="m.path" v-for="m in menu.children">
+        <Menu-item :name="m.path" v-for="m in menu.children" :key="m.title">
             {{m.title}}
         </Menu-item>
     </Submenu>

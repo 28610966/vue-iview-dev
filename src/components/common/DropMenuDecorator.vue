@@ -6,7 +6,7 @@
                 <Icon type="arrow-down-b"></Icon>
             </Button>
             <Dropdown-menu slot="list" >
-                <Dropdown-item :name="menu.type+'/'+id" v-for="menu in list" >
+                <Dropdown-item :name="menu.type+'/'+id" v-for="menu in list" :key="menu.id">
                         <Icon :type="menu.icon"></Icon>
                         {{menu.title}}
                 </Dropdown-item>

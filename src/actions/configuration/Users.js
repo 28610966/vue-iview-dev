@@ -4,6 +4,20 @@
 
 export default {
     actions: {
+        login: {
+            method: 'get',
+            url: (payload) => `/api/auth`,
+            // format: (res) => {
+            //     return {data: res.data, loading: false, type: 'login'}
+            // }
+        },
+        loginUser: {
+            method: 'get',
+            url: (payload) => `/api/auth/user`,
+            // format: (res) => {
+            //     return {data: res.data, loading: false, type: 'loginUser'}
+            // }
+        },
         get: {
             method: 'get',
             url: (payload) => `/api/users/${payload.id}`

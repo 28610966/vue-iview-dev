@@ -9,18 +9,30 @@ util.title = function(title) {
     title = title ? title + ' - Home' : 'Hedwig';
     window.document.title = title;
 };
+//
+// const ajaxUrl = env === 'development' ?
+//     '/' :
+//     env === 'production' ?
+//     'https://www.url.com' :
+//     'https://debug.url.com';
+const ajaxUrl = '/';
 
-const ajaxUrl = env === 'development' ?
-    '/' :
-    env === 'production' ?
-    'https://www.url.com' :
-    'https://debug.url.com';
-
-util.ajax = axios.create({
+util.config = {
     baseURL: ajaxUrl,
     timeout: 30000,
-    responseType: 'json'
-});
+    responseType: 'json',
+}
+
+util.creqte = axios.create;
+util.headers = (headers) =>{
+    return {
+        ajax: axios.create({
+            ...util.config,
+            headers: headers,
+        })
+    };
+};
+util.ajax = axios.create(util.config);
 
 util.stitchingParams = (url,payload) => {
     let params = _.keys(payload).map(k => {

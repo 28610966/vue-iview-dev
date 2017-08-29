@@ -1,6 +1,6 @@
 <template>
         <Breadcrumb>
-            <Breadcrumb-item v-for="(item,index) in breadlist">
+            <Breadcrumb-item v-for="(item,index) in breadlist" :key="item.path">
                 <router-link :to="item.path">{{item.name}}</router-link>
             </Breadcrumb-item>
         </Breadcrumb>

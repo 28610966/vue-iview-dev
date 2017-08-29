@@ -6,30 +6,44 @@
 <template>
     <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
         <Col span="20">
-        <h1 style="width: 100%;border-bottom: 1px solid #e9eaec">Add a Service</h1>
-        <p style="padding:5px 0px;">
-            A service may represent an application, component or team you wish to open incidents against.</p>
-        <p>
-        <h3>General Settings</h3></p>
-        <div>
-            <DynamicForm ref="form" :fields="fields" :ruleValidate="ruleValidate"
-                         :formValidate="formValidate" :labelWidth="150" :button="button"></DynamicForm>
-        </div>
+        <Tabs :animated="false">
+            <Tab-pane label="Incidents">
+                <ServiceIncidents></ServiceIncidents>
+            </Tab-pane>
+            <Tab-pane label="Integrations">
+                <ServiceIntegrations></ServiceIntegrations>
+
+            </Tab-pane>
+            <Tab-pane label="Settings">
+                <ServiceSettings></ServiceSettings>
+            </Tab-pane>
+        </Tabs>
         </Col>
         <Col span="4">
+        <div class="service-buttons">
+            <Button icon="edit">{{$t('button.edit',{msg:$t('h.service')})}}</Button>
+            <Button icon="pause">Disable Service</Button>
+            <Button icon="clock">Schedule Maintenance</Button>
+            <Button icon="plus">New Incident</Button>
+            <Button icon="close"> Delete Service</Button>
+        </div>
         <Card>
             <p slot="title">
-                Resources
+                Service Maintenance
             </p>
-            <ul>
-                <li>Adding Services</li>
-                <li>Best Practices for Services</li>
-                <li>Creating Maintenance Windows</li>
-                <li>How to Trigger an Incident</li>
-                <li>Get More Help</li>
-                <li>Find more answers in our Knowledge Base</li>
-                <li>Chat with Support</li>
-            </ul>
+            <div class="service-maintenace-body">
+                <h4> In Progress</h4>
+                <p>None</p>
+                <div class="divider"></div>
+                <h4>Upcoming</h4>
+                <p>None</p>
+                <div class="divider"></div>
+                <h4>Immediate Maintenance</h4>
+                <Button size="small"> 5 min</Button>
+                <Button size="small"> 15 min </Button>
+                <Button size="small">30 min</Button>
+                <Button size="small">60 min</Button>
+            </div>
         </Card>
         </Col>
     </Row>
@@ -37,8 +51,11 @@
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
     import {DynamicForm} from '../../../common';
+    import ServiceIncidents from './ServiceIncidents.vue'
+    import ServiceIntegrations from './ServiceIntegrations.vue'
+    import ServiceSettings from './ServiceSettings.vue'
     export default {
-        components: {DynamicForm},
+        components: {DynamicForm, ServiceIncidents, ServiceIntegrations, ServiceSettings},
         computed: {
             ...VueUtil(this).select(['Services']).state(),
         },
@@ -78,7 +95,7 @@
             let fields = [
                 {
                     id: 'id',
-                    type:'hidden',
+                    type: 'hidden',
                 },
                 {
                     span: 18,
@@ -86,7 +103,7 @@
                     type: 'input',
                     style: {width: '400px'},
                     id: 'name',
-                    rules:[
+                    rules: [
                         {required: true, message: 'name is required', trigger: 'blur'},
                     ]
                 }, {
@@ -95,7 +112,7 @@
                     style: {width: '400px'},
                     type: 'textarea',
                     id: 'description',
-                    rules:[
+                    rules: [
                         {required: true, message: 'name is description', trigger: 'blur'},
                     ]
                 }, {
@@ -110,7 +127,7 @@
                         {value: '4', label: 'Don\'t use an integration'},
                     ],
                     id: 'integrationType',
-                    rules:[
+                    rules: [
                         {required: true, message: 'integrationType is description', trigger: 'blur'},
                     ]
                 }, {

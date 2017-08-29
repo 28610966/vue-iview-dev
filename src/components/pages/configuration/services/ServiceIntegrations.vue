@@ -1,0 +1,28 @@
+<template>
+    <div class="service-integrations"></div>
+</template>
+
+<script>
+    import {DynamicForm, DynamicQueryForm} from '../../../common';
+    import _ from 'lodash';
+    import {VueUtil, FormUtil} from '../../../../libs';
+
+    export default{
+        name:'ServiceIntegrations',
+        components: {DynamicForm, DynamicQueryForm},
+        computed: {
+            //...VueUtil(this).select(['ServiceIntegrations']).state(),
+        },
+        props: {},
+
+        data(){
+            return {}
+        },
+        mounted(){
+        },
+        watch: {},
+        methods: {
+            //...VueUtil(this).select(['ServiceIntegrations']).actions(),
+        }
+    }
+</script>

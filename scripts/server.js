@@ -147,9 +147,9 @@ function mockData() {
                         .write()
                         .then(post => res.send(success(post)))
                 } else if (req.method === 'DELETE') {
-                    if(!req.body.id){
+                    if (!req.body.id) {
                         res.send(fail('not find id!'))
-                    }else if (_.isNumber(req.body.id)) {
+                    } else if (_.isNumber(req.body.id)) {
                         db.get(t)
                             .remove({id: req.body.id})
                             .write()
@@ -255,20 +255,46 @@ app.all('/api/codeeditor', function (req, res) {
 });
 app.all('/api/login', function (req, res) {
     log(req.query)
-    // setTimeout(() => {
-    if (req.query.username === 'admin' && req.query.password === '000000') {
+    setTimeout(() => {
+        if (req.query.username === 'admin' && req.query.password === '000000') {
 
-        res.json({
-            success: true,
-            content: {'username': 'admin', id: 1}
-        });
-    } else {
-        res.json({
-            success: false,
-            errorMsg: 'username or password wrong !'
-        });
-    }
+            res.json({
+                success: true,
+                content: {'username': 'admin', id: 1, token: ''}
+            });
+        } else {
+            res.json({
+                success: false,
+                errorMsg: 'username or password wrong !'
+            });
+        }
+    }, 2000);
 });
+
+app.all('/api/auth', function (req, res) {
+    log(req.query)
+    setTimeout(() => {
+        if (req.query.username === 'admin' && req.query.password === '000000') {
+            res.json({
+                success: true,
+                content: {'username': 'admin', id: 1, token: 'virtualToken'}
+            });
+        } else {
+            res.json({
+                success: false,
+                errorMsg: 'username or password wrong !'
+            });
+        }
+    }, 2000);
+});
+
+app.all('/api/auth/user', function (req, res) {
+    res.json({
+        success: true,
+        content: {'username': 'admin', id: 1, 'firstname': 'admin', 'lastname': 'admin'}
+    });
+});
+
 
 mockData();
 app.use(function (req, res, next) {

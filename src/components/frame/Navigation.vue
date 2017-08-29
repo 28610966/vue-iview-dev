@@ -1,6 +1,6 @@
 <template>
     <Menu :mode="mode" :theme="theme1" width="auto" @on-select="goTo">
-        <MenuDecorator :menu="m1" v-for="m1 in menus"></MenuDecorator>
+        <MenuDecorator :menu="m1" v-for="m1 in menus" :key="m1.id"></MenuDecorator>
     </Menu>
 </template>
 <script>
