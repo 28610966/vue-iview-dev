@@ -8,7 +8,7 @@ module.exports = {
         vendors: './src/vendors'
     },
     output: {
-        path: path.join(__dirname, './dist')
+        path: path.join(__dirname, '../dist')
     },
     module: {
         rules: [{
@@ -53,10 +53,24 @@ module.exports = {
                     fallback: 'style-loader'
                 })
             },
-
+            //
+            // {
+            //     test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
+            //     loader: 'url-loader?limit=2048'
+            // },
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                loader: 'url-loader?limit=1024'
+                loader: 'file-loader',
+                options: {
+                    name: '/assets/font/[hash].[ext]',
+                }
+            },
+            {
+                test: /\.(gif|jpg|png)\??.*$/,
+                loader: 'file-loader',
+                options: {
+                    name: '/assets/img/[hash].[ext]',
+                }
             },
             {
                 test: /\.(html|tpl)$/,
@@ -67,7 +81,10 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue'],
         alias: {
-            'vue': 'vue/dist/vue.esm.js'
+            'vue': 'vue/dist/vue.esm.js',
+            '@pages': path.join(__dirname, '../src/components/pages'),
+            '@common': path.join(__dirname, '../src/components/common'),
+            '@util': path.join(__dirname, '../src/libs'),
         }
     }
 };

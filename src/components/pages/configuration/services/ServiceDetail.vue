@@ -1,8 +1,3 @@
-<style>
-    .layout-content .ivu-col {
-        padding: 5px 5px;
-    }
-</style>
 <template>
     <Row type="flex" style="width: 100%;border-bottom: 1px solid #e9eaec">
         <Col span="20">

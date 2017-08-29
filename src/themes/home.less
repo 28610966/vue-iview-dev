@@ -33,6 +33,7 @@
     overflow: auto;
     /*margin: 15px;*/
     background: #fff;
+
   }
 
   .layout-copy {
@@ -40,7 +41,6 @@
     padding: 10px 0 20px;
     color: #9ea7b4;
   }
-
   .layout-content-main {
     padding: 10px;
     min-height: 400px;
@@ -80,9 +80,35 @@
     margin-right: 10px;
   }
 
-  .ivu-col {
-    transition: width .2s ease-in-out;
+  .layout-menu-left {
+    background: #464c5b;
+    .right {
+      display: flex;
+      justify-content: flex-end;
+      .ivu-dropdown {
+        cursor: pointer;
+        height: 60px;
+        width: 100px;
+        text-align: center;
+        line-height: 60px;
+        color: #ffffff;
+        .ivu-dropdown-rel{
+          &:hover {
+            background: #80848f;
+          }
+          & > a {
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    .ivu-select-dropdown{
+      margin-top: 0px;
+      border-radius: 0px;
+    }
   }
+
+
   .switch-lang {
     color: #fff;
     height: 60px;
@@ -93,6 +119,12 @@
     &:hover {
       background: #80848f;
     }
+  }
+  .ivu-col{
+    padding:  5px 5px;
+  }
+  .ivu-tabs {
+    overflow: inherit;
   }
 }
 

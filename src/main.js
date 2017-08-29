@@ -9,7 +9,6 @@ import App from './app.vue';
 import Echarts from 'echarts';
 import 'iview/dist/styles/iview.css';
 import 'iview/dist/styles/iview.css';
-
 import '!style-loader!css-loader!less-loader!./themes/index.less'
 
 import VueI18n from 'vue-i18n';
