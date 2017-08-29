@@ -1,6 +1,7 @@
 import axios from 'axios';
 import env from '../config/env';
 import _ from 'lodash';
+import  Vue from 'vue';
 
 let util = {
 
@@ -41,7 +42,7 @@ util.stitchingParams = (url,payload) => {
         } else {
             return k + "=" + payload[k]
         }
-    }).filter(m => m !== null).join("&");
+    }).filter(m => m !== null).concat('lang='+Vue.config.lang).join("&");
     let s = url + ((params === "") ? "" : ("?" + params));
     if (process.env.NODE_ENV === `development`)
         console.log(s);
