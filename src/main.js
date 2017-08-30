@@ -16,12 +16,16 @@ import Locales from './locales';
 import zhLocale from 'iview/src/locale/lang/zh-CN';
 import enLocale from 'iview/src/locale/lang/en-US';
 import modules from './actions';
+import commonComponents from './components/common';
+
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(iView);
-
+_.keys(commonComponents).map(k => {
+    Vue.use(commonComponents[k])
+});
 
 // 自动设置语言
 const navLang = navigator.language;

@@ -72,12 +72,10 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
-    import {DropMenuDecorator} from '../../../common';
     import iView from 'iview';
 
     export default {
         components: {
-            DropMenuDecorator
         },
         computed: {
             ...VueUtil(this).select(['Services']).state(),

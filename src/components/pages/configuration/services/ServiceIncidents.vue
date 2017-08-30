@@ -5,14 +5,13 @@
 </template>
 
 <script>
-    import {DynamicForm, DynamicQueryForm} from '../../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../../libs';
     import IncidentsMain from '../../incidents/IncidentsMain.vue'
 
     export default{
         name:'ServiceIncidents',
-        components: {DynamicForm, DynamicQueryForm, IncidentsMain},
+        components: {IncidentsMain},
         computed: {
             //...VueUtil(this).select(['ServiceIncidents']).state(),
         },

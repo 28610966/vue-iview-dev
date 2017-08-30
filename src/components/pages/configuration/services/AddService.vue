@@ -30,9 +30,8 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
-    import {DynamicForm} from '../../../common';
     export default {
-        components: {DynamicForm},
+        components: {},
         computed: {
             ...VueUtil(this).select(['Services']).state(),
         },

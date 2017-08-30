@@ -18,6 +18,14 @@ module.exports = merge(webpackBaseConfig, {
         filename: '[name].js',
         chunkFilename: '[name].chunk.js'
     },
+    module: {
+        rules: [
+            {
+                test: /\.(woff|svg|eot|ttf)\??.*$/,
+                loader: 'url-loader?limit=2048'
+            },
+        ]
+    },
     plugins: [
         new autoMergeJs(),
         new ExtractTextPlugin({

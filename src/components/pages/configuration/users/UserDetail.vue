@@ -25,7 +25,6 @@
 </template>
 
 <script>
-    import {DynamicForm, DynamicQueryForm} from '../../../common';
     import NotificationRules from './NotificationRules.vue';
     import ContactInformation from './ContactInformation.vue';
     import UserSettings from './UserSettings.vue';
@@ -35,8 +34,6 @@
 
     export default{
         components: {
-            DynamicForm,
-            DynamicQueryForm,
             NotificationRules,
             ContactInformation,
             UserSettings,

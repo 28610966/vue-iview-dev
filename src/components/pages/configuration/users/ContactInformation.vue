@@ -15,13 +15,12 @@
      </div>
 </template>
 <script>
-    import {DynamicForm, DynamicQueryForm} from '../../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../../libs';
 
     export default{
         name: 'ContactInformation',
-        components: {DynamicForm, DynamicQueryForm},
+        components: {},
         computed: {
             ...VueUtil(this).select(['Users','Services']).state(),
         },

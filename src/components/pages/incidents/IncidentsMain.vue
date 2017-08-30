@@ -71,13 +71,12 @@
 </template>
 
 <script>
-    import {DynamicForm, DynamicQueryForm, DropMenuDecorator} from '../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../libs';
     import IncidentsTools from './IncidentsTools.vue'
 
     export default{
-        components: {DynamicForm, DynamicQueryForm, DropMenuDecorator, IncidentsTools},
+        components: {IncidentsTools},
         computed: {
             ...VueUtil(this).select(['Incidents', 'Services']).state(),
         },

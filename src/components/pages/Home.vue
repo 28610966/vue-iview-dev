@@ -35,7 +35,7 @@
 <script>
     import _ from 'lodash';
     import Vue from 'vue';
-    import {VueUtil, FormUtil} from '../../libs';
+    import {VueUtil, FormUtil} from '@util';
     import Navigation from '../frame/Navigation.vue'
     import Breadcrumb from '../frame/Breadcrumb.vue'
     import RightTopTools from '../frame/RightTopTools.vue'

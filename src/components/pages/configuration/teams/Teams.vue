@@ -56,11 +56,9 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
-    import {DropMenuDecorator,DynamicForm} from '../../../common';
 
     export default {
         components: {
-            DropMenuDecorator,DynamicForm
         },
         computed: {
             ...VueUtil(this).select(['Teams']).state(),

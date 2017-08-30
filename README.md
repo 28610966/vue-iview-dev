@@ -15,7 +15,8 @@ npm run server  //启动服务端
 ### 文件结构
 ```
 入口文件: /src/main.js
-路由文件: /src/route.js
+路由文件: /src/router.js
+菜单文件: /src/menus.js
 通用组件位置 : /src/components/common
 页面框架组件位置 : /src/components/frame
 业务组件位置 : /src/components/pages

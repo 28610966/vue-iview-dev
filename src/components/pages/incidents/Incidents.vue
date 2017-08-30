@@ -6,9 +6,11 @@
             </Col>
             <Col span="5">
                 <Row>
-                    <Col span="24">
-                        <Button type="success" icon="plus" style="width:100%;text-align: left;"  @click="openModal">{{$t('button.new',{msg:$t('h.Incidents')})}}</Button>
-                    </Col>
+                    <!--<Key id="admin">-->
+                        <Col span="24">
+                                <Button type="success" icon="plus" style="width:100%;text-align: left;"  @click="openModal">{{$t('button.new',{msg:$t('h.Incidents')})}}</Button>
+                        </Col>
+                    <!--</Key>-->
                     <Col span="24">
                         <Card style="margin: 5px 0px;">
                             <p slot="title">
@@ -36,29 +38,17 @@
                 </Row>
             </Col>
         </Row>
-        <Modal width="600px" v-model="modal" :title="modalTitle"
-               :loading="loading"
-               @on-ok="saveIncidents"
-        >
-            <DynamicForm :dicts="dicts" :button="{enabled:false}" ref="form" :fields="fields" :ruleValidate="ruleValidate"
-                         :formValidate="formValidate"></DynamicForm>
-            <div slot="footer">
-                <Button size="large" @click="resetForm">Reset</Button>
-                <Button type="primary" size="large" :loading="loading" @click="saveIncidents">Submit</Button>
-            </div>
-        </Modal>
     </div>
 </template>
 
 <script>
-    import {DynamicForm, DynamicQueryForm, DropMenuDecorator} from '../../common';
     import _ from 'lodash';
     import {VueUtil, FormUtil} from '../../../libs';
     import IncidentsTools from './IncidentsTools.vue'
     import IncidentsMain from './IncidentsMain.vue'
 
     export default{
-        components: {DynamicForm, DynamicQueryForm, DropMenuDecorator, IncidentsTools ,IncidentsMain},
+        components: { IncidentsTools ,IncidentsMain},
         computed: {
             ...VueUtil(this).select(['Incidents','Services']).state(),
         },

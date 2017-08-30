@@ -5,10 +5,8 @@
 </template>
 <script>
     import menus from '../../menus';
-    import {MenuDecorator} from '../common';
     export default {
         name: 'Navigation',
-        components: {MenuDecorator},
         data () {
             return {
                 theme1: 'dark',

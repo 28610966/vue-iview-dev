@@ -35,11 +35,10 @@
 
 <script>
     import {mapState} from 'vuex';
-    import {DynamicForm, DynamicQueryForm} from '../../../common'
     import {VueUtil, FormUtil} from '../../../../libs'
     import _ from 'lodash';
     export default {
-        components: {DynamicForm, DynamicQueryForm},
+        components: {},
         computed: {
             ...VueUtil(this).select(['Users', 'Dict']).state(),
         },

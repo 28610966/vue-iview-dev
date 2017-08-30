@@ -45,12 +45,11 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
-    import {DynamicForm} from '../../../common';
     import ServiceIncidents from './ServiceIncidents.vue'
     import ServiceIntegrations from './ServiceIntegrations.vue'
     import ServiceSettings from './ServiceSettings.vue'
     export default {
-        components: {DynamicForm, ServiceIncidents, ServiceIntegrations, ServiceSettings},
+        components: {ServiceIncidents, ServiceIntegrations, ServiceSettings},
         computed: {
             ...VueUtil(this).select(['Services']).state(),
         },

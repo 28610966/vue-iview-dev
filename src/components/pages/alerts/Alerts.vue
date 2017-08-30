@@ -49,12 +49,10 @@
 </template>
 <script>
     import {VueUtil, FormUtil} from '../../../libs';
-    import {DropMenuDecorator,DynamicForm} from '../../common';
     import _ from 'lodash';
 
     export default {
         components: {
-            DropMenuDecorator,DynamicForm
         },
         computed: {
             ...VueUtil(this).select(['Alerts']).state(),

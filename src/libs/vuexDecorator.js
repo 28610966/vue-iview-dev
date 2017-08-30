@@ -39,7 +39,6 @@ export default (scope, vuex) => {
                 url: url,
                 method: action.method || 'get',
                 data: payload,
-
             }).then(function (res) {
                 if (action.format) {
                     commit(`set_${scope}_${key}`, action.format(res));
@@ -55,7 +54,7 @@ export default (scope, vuex) => {
                 commit(`set_${scope}_${key}`, {
                     loading: false,
                     err: err,
-                    data: null
+                    data: {}
                 });
             })
         }

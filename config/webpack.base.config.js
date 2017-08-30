@@ -53,18 +53,7 @@ module.exports = {
                     fallback: 'style-loader'
                 })
             },
-            //
-            // {
-            //     test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-            //     loader: 'url-loader?limit=2048'
-            // },
-            {
-                test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                loader: 'file-loader',
-                options: {
-                    name: '/assets/font/[hash].[ext]',
-                }
-            },
+
             {
                 test: /\.(gif|jpg|png)\??.*$/,
                 loader: 'file-loader',
