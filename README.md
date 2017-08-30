@@ -17,7 +17,7 @@ npm run server  //启动服务端
 入口文件: /src/main.js
 路由文件: /src/router.js
 菜单文件: /src/menus.js
-通用组件位置 : /src/components/common
+通用组件位置 : /src/components/common //通用组件为全局组件,无需引用和注册可直接调用
 页面框架组件位置 : /src/components/frame
 业务组件位置 : /src/components/pages
 请求及服务位置 : /src/actions
@@ -37,11 +37,11 @@ npm run server  //启动服务端
 import ...;
 export default{
     name: 'component.name', //组件名
-    components:{ ...}, //用到的子组件
+    components:{ ...}, //注册要用的组件
     computed(){
-          ...VueUtil(this).select([Entity.name, ...]).state(), //引入 vuex 数据集
+          ...VueUtil(this).select([Entity.name, ...]).state(), //引入 vuex state
     },
-    methods: { // 定义所有页面中使用的方法
+    methods: { // 定义页面中使用的Action
           ...VueUtil(this).select([Entity.name, ...]).actions(), //引入 vuex action
     },
     watch:{
@@ -61,19 +61,119 @@ export default{
 }
 </script>
 ```
+#### action 文件
+```
+export default {
+    actions: {
+        get: {
+            method: 'get',
+            url: (payload) => `/api/users/${payload.id}`,
+            //如要重新封装返回数据 请自行实现 format 方法, 否则统一封装为 {data,loading,error}
+            //format: (responseData){
+            //  return ...;
+            //}
+        },
+        list: {
+            method: 'get',
+            url: (payload) => `/api/users`
+        },
+        save: {
+            method: 'post',
+            url: (payload) => `/api/users`
+        },
+        update: {
+            method: 'put',
+            url: (payload) => `/api/users`,
+        },
+        delete: {
+            method: 'delete',
+            url: (payload) => `/api/users`,
+        },
+        ...自定义action
+    },
+    // state: {}, // 和 actions 一一 对应, 一般无需重写
+    // mutations: {},// 无需重写
+    // getters: {} // 复用业务逻辑可以写在这里, 
+}
+```
+### 如何调用Action方法?
+五个默认方法可以直接调用
+```
+VueUtil(this).select('User').get(id);
+VueUtil(this).select('User').save(user);
+VueUtil(this).select('User').update(user);
+VueUtil(this).select('User').delete(id);
+VueUtil(this).select('User').list(query);
+```
+自定义的方法调用 action
+```
+VueUtil(this).select('User').action('custome',params);
+```
+### 如何处理Action返回值?
+1. 定义 watched, 指定要监控的变量
+```
+watched:{
+    'User.get': 'listenUser',
+    'User.save': 'listenUser',
+    'User.update': 'listenUser',
+    'User.delete': 'listenUser',
+}
+```
+2. 定义 method 处理返回值
+```
+methods:{
+    listenUser:(data) =>{
+        switch(data.type){
+            case 'get':
+            //handle get
+            break;
+            case 'save':
+            //handle save
+            break;
+            case 'update':
+            //handle update
+            break;
+            case 'delete':
+            //handle delete
+            break;
+        }
+    }
+}
+```
+### 如何绑定数据到 template
+1. 输出数据 "{{ }}"
+```
+<div>{{ title }}</div> 
+//title 可以是 data() 或者 props 里定义的变量
+```
+2. 绑定属性 ":"
+```
+<Button :label="label"></Button>
+//label 可以是 data() 或者 props 里定义的变量(也可以是方法)
+```
+3. 绑定事件 "@"
+```
+<Button @click="method"></Button>
+//method 可以是methods 里定义的方法 或者 props, data() 里定义的方法
+```
 
+
+### 如何控制页面元素权限
+用 \<Key id='功能号'>\</Key> 将元素包裹, 例如
+```
+<Key id='User.add'>
+    <Button >Add Users</Button>
+</Key>
+```
 ### 国际化
-```
-
-用法:
 template中调用 
-  普通调用$t('key'), 格式化输出 $t('key',{msg:$t('key1')})
+```
+<div>{{ $t('key') }}</div> //单值
+<div>{{ $t('key',{msg:$t('key1')}) }}</div> //组合值
+```
 js中调用
-   this.$t('key') ...
-热切换只支持 template中的国际化, 尽量不要在 js 中调用 $t
-
 ```
- #### 后端请求
+this.$t('key'); //单值
+this.$t('key',{msg:this.$t('key1')}); //组合值
 ```
-后台可在请求headers的Lang属性里获取当前语言
-```
+后端可在请求headers的Lang属性里获取当前语言 'zh_CN','en_US'

@@ -8,7 +8,7 @@
     "init": "webpack --progress --config config/webpack.dev.config.js",
     "start": "node scripts/start.js",
     "server": "node scripts/server.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --config config/webpack.dev.config.js",
+    "dev": "webpack-dev-server --content-base ./public --open --inline --hot --port 3000 --compress --history-api-fallback --config config/webpack.dev.config.js",
     "build": "rimraf ./dist && webpack --progress --hide-modules --config config/webpack.prod.config.js",
     "lint": "eslint --fix --ext .js,.vue src"
   },

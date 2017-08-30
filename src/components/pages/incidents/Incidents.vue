@@ -61,7 +61,6 @@
                 this.$refs['incidentsMain'].openModal();
             },
         },
-
         mounted(){
         },
         watch: {

@@ -55,7 +55,6 @@
 <script>
     import {VueUtil, FormUtil} from '../../../../libs';
     import _ from 'lodash';
-
     export default {
         components: {
         },
