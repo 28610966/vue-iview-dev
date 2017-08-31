@@ -10,6 +10,7 @@ export default {
     ScheduleInfomation : () => import('./configuration/schedules/ScheduleInfomation'),
     Schedules : () => import('./configuration/schedules/Schedules'),
     SchedulesEdit : () => import('./configuration/schedules/SchedulesEdit'),
+    SchedulesTimeline : () => import('./configuration/schedules/SchedulesTimeline'),
     AddService : () => import('./configuration/services/AddService'),
     ServiceDetail : () => import('./configuration/services/ServiceDetail'),
     ServiceIncidents : () => import('./configuration/services/ServiceIncidents'),

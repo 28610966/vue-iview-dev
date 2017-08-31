@@ -35,16 +35,19 @@
                             <Icon type="close" class="close"></Icon>
                             </span>
                         </p>
-                        <div class="body" style="min-height: 200px">
+                        <div class="body" style="min-height: 130px">
                             <Row style="height: 100%">
                                 <Col span="8">
                                 <p><span style="color: red">Step1</span>: Add users</p>
                                 <div class="select-users">
-                                    <div class="user" v-for="user in layer.selectUsers">
-                                        {{user.name}}
-                                        <span @click="removeSelectUser(layer, user)">
-                                        <Icon class="close" type="close"></Icon>
-                                    </span>
+                                    <div class="user" v-if="user.name" v-for="user in layer.selectUsers"  v-dragging="{ item: user, list: layer.selectUsers ,group:layer.name}">
+                                        <div>
+                                            <Icon type="arrow-move"></Icon>
+                                            <span>{{user.name}}</span>
+                                            <span @click="removeSelectUser(layer, user)">
+                                            <Icon class="close" type="close"></Icon>
+                                        </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <Select :ref="layer.name+'_select'" @on-change="selectUser(layer)">
@@ -81,29 +84,27 @@
                                                 </Select>
                                             </Col>
                                         </Row>
-
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col span="10">
-                                        Handoff time</Col>
+                                        <Col span="10">Handoff time</Col>
                                         <Col span="14">
-                                        <Row>
-                                            <Col span="14">
-                                            <Select>
-                                                <Option value="Sun">Sun</Option>
-                                                <Option value="Mon">Mon</Option>
-                                                <Option value="Tue">Tue</Option>
-                                                <Option value="Web">Web</Option>
-                                                <Option value="Thu">Thu</Option>
-                                                <Option value="Fri">Fri</Option>
-                                                <Option value="Sat">Sat</Option>
-                                            </Select>
-                                            </Col>
-                                            <Col span="8" offset="2">
-                                            <TimePicker type="time" format="HH:mm"></TimePicker>
-                                            </Col>
-                                        </Row>
+                                            <Row>
+                                                <Col span="10">
+                                                <Select>
+                                                    <Option value="Sun">Sun</Option>
+                                                    <Option value="Mon">Mon</Option>
+                                                    <Option value="Tue">Tue</Option>
+                                                    <Option value="Web">Web</Option>
+                                                    <Option value="Thu">Thu</Option>
+                                                    <Option value="Fri">Fri</Option>
+                                                    <Option value="Sat">Sat</Option>
+                                                </Select>
+                                                </Col>
+                                                <Col span="12" offset="2">
+                                                <TimePicker type="time" format="HH:mm"></TimePicker>
+                                                </Col>
+                                            </Row>
 
                                         </Col>
                                     </Row>
@@ -130,6 +131,9 @@
                     </p>
                     </Col>
                 </Row>
+            </div>
+            <div>
+                <SchedulesTimeline></SchedulesTimeline>
             </div>
             </Col>
             <Col span="5">
@@ -162,6 +166,7 @@
                         </p>
                         <div class="content">
                             <div v-for="user in Users.list.data">
+                                {{user.name}}
                                 <!--<Link :to="`/users/${user.id}`">{{user.name}}</div>-->
                             </div>
                         </div>
@@ -175,11 +180,12 @@
 
 <script>
     import _ from 'lodash';
+    import SchedulesTimeline from './SchedulesTimeline.vue';
     import {VueUtil, FormUtil} from '@util';
 
     export default{
         name: 'SchedulesEdit',
-        components: {},
+        components: {SchedulesTimeline},
         computed: {
             ...VueUtil(this).select(['Users','Teams']).state(),
         },
@@ -200,10 +206,18 @@
         mounted(){
             VueUtil(this).select("Users").list();
             VueUtil(this).select("Teams").list();
+
+            this.$dragging.$on('dragged', ({value}) => {
+                console.log(value.list)
+            })
+//            this.$dragging.$on('dragend', (value) => {
+//
+//            })
         },
         watch: {},
         methods: {
             ...VueUtil(this).select(['Users','Teams']).actions(),
+
             selectUser(layer){
                 let select = this.$refs[layer.name + "_select"][0];
                 let id = select.model;

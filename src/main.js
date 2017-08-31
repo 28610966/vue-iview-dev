@@ -6,6 +6,7 @@ import Routers from './router';
 import Vuex from 'vuex';
 import Util from './libs/util';
 import App from './app.vue';
+import VueDND from 'awe-dnd'
 import Echarts from 'echarts';
 import 'iview/dist/styles/iview.css';
 import 'iview/dist/styles/iview.css';
@@ -23,6 +24,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueI18n);
 Vue.use(iView);
+Vue.use(VueDND);
 _.keys(commonComponents).map(k => {
     Vue.use(commonComponents[k])
 });
