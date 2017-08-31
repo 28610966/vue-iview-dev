@@ -3,7 +3,10 @@ export default {
         date:'YYYY-MM-DD',
         dateTime:'YYYY-MM-DD HH:mm:ss',
         time:'HH:mm:ss',
-        MD:'D/M',
+        MD:'MMM D',
+        month:'MMMM',
+        smonth:'MMM',
+        w:'w',
     },
     button: {
         add: "Add {msg}",

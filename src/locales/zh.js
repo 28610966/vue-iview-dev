@@ -4,6 +4,9 @@ export default {
         dateTime:'YYYY-MM-DD HH:mm:ss',
         time:'HH:mm:ss',
         MD:'M月D日',
+        month:'M月',
+        smonth:'M月',
+        w:'周w',
     },
     button: {
         add: "添加{msg}",

@@ -1,18 +1,22 @@
 .schedules {
   @bg: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAIAAAADnC86AAAAr0lEQVRYw8XYMQ7AMAgDQOqF//82bF0qVa3SJiGA+cCJzfbRWjMzcZ2qivdAUUUEFNXMQFE9H4eoy3CUugYHqgtwrDoLh6tTcIY6hpPUAZyn/sGp6iecrfbhArUD16hvuEx9wJXqDRerF1yviggoqj/6bKqqCorq/3g/m4KieuCoHA6KugbHdg5Q1Fk4o1+Boo7hvC4JivoHZ/dmUNQ+XLMRgKK+4co9BBT1huu3nxOZcHs4sp3yAwAAAABJRU5ErkJggg%3D%3D);;
 
-  .layers{
+  .layers {
     overflow: hidden;
-    >.body{
-      display: flex; min-height: 200px;
+    padding-bottom: 30px;
+    > .body {
+      display: flex;
+      min-height: 130px;
+      height: 100%;
       width: 100%;
-      >.title{
-        flex:0 0 auto;width: 300px;
+      > .title {
+        flex: 0 0 auto;
+        width: 300px;
         border: 1px solid #e9eaec;
         border-right: none;
       }
-      >.content{
-        flex:1 0 auto;
+      > .content {
+        flex: 1 0 auto;
       }
     }
 
@@ -22,19 +26,24 @@
     display: flex;
     border: 1px solid #e9eaec;
     //overflow: hidden;
+    height: 100%;
+    .bg {
+      width: 100%;
+      height: 100%;
+      background-image: @bg;
+      position: absolute;
+    }
     .block {
       position: relative;
-      border-right: 1px solid  #dddee1;
-      min-height: 200px;
+      border-right: 1px solid #dddee1;
       height: 100%;
       display: flex;
-      background-image: @bg;
       .title {
         position: absolute;
         left: 2px;
         top: 2px;
         display: flex;
-        .firstday{
+        .firstday {
           position: absolute;
           top: -20px;
           width: 100px;
@@ -51,42 +60,71 @@
       left: 0px;
       cursor: pointer;
       //border-radius: 2px;
-      border-left:1px solid transparent;
-      border-right:1px solid transparent;
-      &:hover{
+      &:hover {
         //background-image: linear-gradient(to bottom, #f33, #e60000);
-        border-left:1px solid #fff;
-        border-right:1px solid #fff;
       }
 
-      .ivu-poptip{
+      .ivu-poptip {
         width: 100%;
-        .ivu-poptip-rel{
+        .ivu-poptip-rel {
           width: inherit;
-          .poptip-body{
+          .poptip-body {
             height: 20px;
             width: inherit;
             text-align: left;
             color: #fff;
-            padding-left:2px;
+            padding-left: 2px;
             overflow: hidden;
           }
         }
       }
-     .poptip-tools{
-       border-top:1px solid #e9eaec;
-       button.ivu-btn{
-         width: 100%;
-         margin-top: 5px;
-       }
-     }
+      .poptip-tools {
+        border-top: 1px solid #e9eaec;
+        button.ivu-btn {
+          width: 100%;
+          margin-top: 5px;
+        }
+      }
 
     }
   }
-  .schedules-right{
-    button.ivu-btn{
+  .schedules-right {
+    button.ivu-btn {
       width: 100%;
       text-align: left;
     }
   }
+}
+.schedules-edit{
+  .layers{
+    .close{
+      position: absolute;
+      right: 10px;
+      top: 4px;
+      cursor: pointer;
+    }
+    .select-users{
+      .user{
+        position: relative;
+        border-radius: 4px;
+        background: #2b85e4;
+        color:#ffffff;
+        margin-bottom:4px;
+        padding-left:10px;
+
+      }
+    }
+    .step2{
+      .ivu-col{
+        padding: 5px 0px;
+      }
+    }
+  }
+  .right-area{
+    button.ivu-btn {
+      width: 100%;
+      text-align: left;
+    }
+  }
+
 }

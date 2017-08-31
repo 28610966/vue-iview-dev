@@ -34,6 +34,10 @@ const routers = [
                         path: '/schedules',
                         component: Pages.Schedules
                     }, {
+                        name: 'Schedules',
+                        path: '/schedules/:id/edit',
+                        component: Pages.SchedulesEdit
+                    }, {
                         name: 'Services',
                         path: '/services',
                         component: Pages.Services,

@@ -1,11 +1,10 @@
 <template>
-    <div class="calendar">
+    <div class="calendar" :style="`height:${layers * 30}px`">
+        <div class="bg" :style="`width:${bgWidth}`"></div>
         <div :style="`width:${blockStyle.width}`" class="block" v-for="t in tblocks">
             <div class="title">
                 <div class="firstday" v-if="t.day === '1'">{{t.month}}</div>
                 {{t.title}}
-
-
             </div>
             <div v-if="t.columns" class="title-secondary" v-for="tt in t.columns"></div>
         </div>
@@ -66,13 +65,15 @@
             'events',
             'click1',
             'click2',
+            'layers',
         ],
 
         data(){
             return {
                 tblocks: [],
                 blockStyle: {},
-                _events: []
+                _events: [],
+                bgWidth: null,
             }
         },
         mounted(){
@@ -93,9 +94,16 @@
                     //结束时间需补充一个分段时间
                     endTime: this.scope === '1d' ? this.tblocks[this.tblocks.length - 1].time.add(4, 'h') : this.tblocks[this.tblocks.length - 1].time.add(1, 'd'),
                 };
+                let ruler = range.endTime.diff(range.beginTime, 'd', true);
 
+                //计算今天的位置,用于渲染背景
+                let bgWidth = ( moment().diff(range.beginTime,'d',true) / ruler * 100);
+                if(bgWidth < 0)
+                    bgWidth = 0;
+                this.bgWidth = bgWidth + '%';
+                //计算今天的位置,用于渲染背景
+                //计算每个事件条的宽度和偏移量
                 if (this.events) {
-                    let ruler = range.endTime.diff(range.beginTime, 'd', true);
                     let width;
                     let left;
                     let display = 'block';
@@ -120,9 +128,9 @@
                             left = left + '%';
                         }
                         return {...event, width, left, display};
-                    })
+                    });
                 }
-                console.log(this._events)
+                //计算每个事件条的宽度和偏移量
                 if (this.cb) {
                     this.cb(range);
                 }
@@ -148,14 +156,18 @@
             },
             cap(dm, time){
                 let title = time.format(dm);
-                let month = time.format('M月');
+                let month = time.format(this.$t('date.month'));
+                let smonth = time.format(this.$t('date.smonth'));
                 let day = time.format('D');
-                return {time, title, month, day};
+                return {time, title, month, smonth, day};
+            },
+            getFirstDay(time){
+                return moment(time).add(moment(time).day() - 8,'d');
             },
             renderDayAddSomeDays(begin, addDays){
                 if (!_.isNumber(addDays) || addDays < 0)
                     throw new Error('error params [addDays]!');
-                const dm = addDays > 14 ? 'D' : 'D/M';
+                const dm = addDays > 14 ? 'D' : 'ddd M/D';
                 var times = [];
                 for (let i = 0; i < addDays; i++) {
                     let time = moment(begin || new Date()).add(i, 'd');
@@ -168,42 +180,16 @@
                 this.tblocks = times;
                 this.changeRange();
             },
-            render2W(){
-                const w = moment(this.startTime || new Date()).day();
-                const dm = 'D/M';
-                var times = [];
-                for (let i = 1; i <= 14; i++) {
-                    let date = moment(this.startTime || new Date()).add(w - 7 + i, 'd');
-                    times.push(this.cap(dm, date));
-                }
-
-
-                var blockStyle = {
-                    width: (100.0 / times.length) + '%'
-                }
-                this.blockStyle = blockStyle;
-                this.tblocks = times;
-                this.changeRange();
+            render1W(){ //从选中日期所在周的第一天开始计算
+                this.renderDayAddSomeDays(this.getFirstDay(this.startTime).format(this.$t('date.date')), 7);
+            },
+            render2W(){ //从选中日期所在周的第一天开始计算
+                this.renderDayAddSomeDays(this.getFirstDay(this.startTime).format(this.$t('date.date')), 14);
             },
             render1M(){
                 this.renderDayAddSomeDays(this.startTime, 31);
             },
-            render1W(){
-                const w = moment(this.startTime || new Date()).day();
-                const dm = 'D/M';
-                var times = [];
-                for (let i = 1; i <= 7; i++) {
-                    let date = moment(this.startTime || new Date()).add(w - 7 + i, 'd');
-                    times.push(this.cap(dm, date));
-                }
 
-                var blockStyle = {
-                    width: (100.0 / times.length) + '%'
-                }
-                this.blockStyle = blockStyle;
-                this.tblocks = times;
-                this.changeRange();
-            },
             render4Day(){
                 this.renderDayAddSomeDays(this.startTime, 4);
             },
@@ -235,9 +221,6 @@
                     columns: ['21:00', '22:00', '23:00', '24:00']
                 },];
 
-                _.forEach(times,t=>{
-                   console.log(t.time.format('MM/DD HH:mm:ss'))
-                })
                 var blockStyle = {
                     width: (100.0 / times.length) + '%'
                 }

@@ -9,6 +9,7 @@ export default {
     Calendar : () => import('./configuration/schedules/Calendar'),
     ScheduleInfomation : () => import('./configuration/schedules/ScheduleInfomation'),
     Schedules : () => import('./configuration/schedules/Schedules'),
+    SchedulesEdit : () => import('./configuration/schedules/SchedulesEdit'),
     AddService : () => import('./configuration/services/AddService'),
     ServiceDetail : () => import('./configuration/services/ServiceDetail'),
     ServiceIncidents : () => import('./configuration/services/ServiceIncidents'),

@@ -22,7 +22,7 @@
                             <Button @click="addStartTime(1)" icon="chevron-right"></Button>
                         </ButtonGroup>
                         <span>
-                            {{beginTime}} ~ {{endTime}}
+                            {{beginTime}} <span v-if="endTime"> ~ {{endTime}}</span>
                             </span>
                         </Col>
                         <Col span="16" style="text-align: right;">
@@ -35,16 +35,16 @@
                         </ButtonGroup>
                         </Col>
                         <Col span="24">
-                        <div class="layers">
+                        <div class="layers" :style="`height:${layers.length * 40 }px`">
                             <h3>Configuration layers</h3>
                             <div class="body">
-                                <div class="title" style="position: relative;">
+                                <div class="title" :style="`position: relative;`">
                                     <div v-for="event in events">
                                         <div :style="`position:absolute;top:${event.top}px;right:10px;z-index:${event.zIndex}`">{{event.layers}}</div>
                                     </div>
                                 </div>
                                 <div class='content'>
-                                    <Calendar :click1="scheduleOverride" :click2="viewProfile" :events="events"
+                                    <Calendar :layers="layers" :click1="scheduleOverride" :click2="viewProfile" :events="events"
                                               :cb="setTimeRange" :startTime="startTime"
                                               :scope="scope"></Calendar>
                                 </div>
@@ -62,11 +62,9 @@
                             </div>
                         </div>
                         </Col>
-
                     </Row>
                 </Card>
                 </Col>
-
             </Row>
             </Col>
             <Col span="4">
@@ -75,7 +73,7 @@
                 <Button @click="showScheduleInfomation" icon="information-circled">Schedule Info</Button>
                 </Col>
                 <Col>
-                <Button icon="edit">Edit this Schedule</Button>
+                <Button icon="edit" @click="editSchedule">Edit this Schedule</Button>
                 </Col>
                 <Col>
                 <Button icon="ios-copy-outline">Copy this Schedule</Button>
@@ -156,20 +154,16 @@
                     layers: 'layer1',
                     begin: '2017-8-30 13:30:00',
                     end: '2017-8-30 16:30:00',
-                    color: 'green',
-                    top: 30,
-                    zIndex: 1,
+                    sort:1,
                     title: 'wangbin',
+                    repeat: 'day',
                     id: 1,
-                    layer: "layer1",
                 },
                 {
                     layers: 'layer1',
                     begin: '2017-9-3 17:30:00',
                     end: '2017-9-20 16:30:00',
-                    color: 'black',
-                    top: 30,
-                    zIndex: 2,
+                    sort:1,
                     title: 'admin',
                     id: 2,
                 },
@@ -177,9 +171,7 @@
                     layers: 'layer2',
                     begin: '2017-9-15 17:30:00',
                     end: '2017-9-18 16:30:00',
-                    color: 'red',
-                    top: 60,
-                    zIndex: 3,
+                    sort:2,
                     title: 'guwei',
                     id: 3,
                 },
@@ -187,22 +179,63 @@
                     layers: 'layer2',
                     begin: '2017-9-17 17:30:00',
                     end: '2017-9-28 16:30:00',
-                    color: 'orange',
-                    top: 60,
-                    zIndex: 4,
+                    sort:2,
                     title: 'xiatw',
+                    id: 4,
+                },
+                {
+                    layers: 'layer3',
+                    begin: '2017-9-3 17:30:00',
+                    end: '2017-9-20 16:30:00',
+                    sort:3,
+                    title: 'aaa',
+                    id: 4,
+                },
+                {
+                    layers: 'layer4',
+                    begin: '2017-9-8 17:30:00',
+                    end: '2017-9-9 16:30:00',
+                    sort:4,
+                    title: '333',
+                    id: 4,
+                },
+                {
+                    layers: 'layer5',
+                    begin: '2017-9-12 17:30:00',
+                    end: '2017-9-19 16:30:00',
+                    sort:5,
+                    title: '111',
+                    id: 4,
+                },
+                {
+                    layers: 'layer6',
+                    begin: '2017-9-12 17:30:00',
+                    end: '2017-9-22 16:30:00',
+                    sort: 6,
+                    title: '5455',
+                    id: 4,
+                },
+                {
+                    layers: 'layer7',
+                    begin: '2017-9-7 17:30:00',
+                    end: '2017-9-10 16:30:00',
+                    sort: 7,
+                    title: '3455',
                     id: 4,
                 }
             ]
+            const colors = ['#2d8cf0','#19be6b','#ff9900','#ed3f14','#939123','#e5a8d5','#000000','#5123d3'];
+            events = _.map(events,e=>{
+                return {...e, top: e.sort * 30 , color: colors[e.sort], zIndex: e.sort + 100}
+            })
 
-//            const layers = _.groupBy(events,(e)=>e.layer);
-//            alert(JSON.stringify(layers))
+            const layers = _.keys(_.groupBy(events,(e)=>e.layers));
             let finalEvents = _.map(events, e => {
                 return {...e, top: 50};
             })
             return {
                 scheduleInformationData,
-//                layers,
+                layers,
                 infomationModal: false,
                 scope: null,
                 startTime: this.getToday(),
@@ -217,6 +250,9 @@
         },
         watch: {},
         methods: {
+            editSchedule(){
+                this.$router.push("/schedules/1/edit");
+            },
             showScheduleInfomation(){
                 this.infomationModal = !this.infomationModal;
             },
@@ -228,6 +264,9 @@
             setTimeRange({beginTime, endTime}){
                 this.beginTime = beginTime.format(this.$t('date.MD'));
                 this.endTime = endTime.format(this.$t('date.MD'));
+                if(this.scope === '1d'){
+                    this.endTime = null;
+                }
             },
             //...VueUtil(this).select(['Schedules']).actions(),
             resetToday(){
