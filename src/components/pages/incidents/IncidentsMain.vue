@@ -184,7 +184,7 @@
                     formIndex: 3,
                     rules: [{required: true}]
                 },
-                {id: "Created", label: "Created", type: "hidden", sortable: "custom", span: 22,},
+                {id: "Created", label: "Created", type: "input", sortable: "custom", span: 22,},
                 {
                     id: "Service",
                     label: "Service",
@@ -194,7 +194,7 @@
                     formIndex: 1,
                     options: "Services"
                 },
-                {id: "Assigned", label: "Assigned To", type: "input", sortable: "custom", span: 22, formIndex: 4},
+                {id: "Assigned", label: "AssignedTo", type: "input", sortable: "custom", span: 22, formIndex: 4},
                 {
                     id: "Description",
                     label: "Description",

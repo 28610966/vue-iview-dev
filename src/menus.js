@@ -21,7 +21,7 @@ const menus = [{
     "role": "3",
     "children": [
 
-        {"id": 9, "title": "Schedules", "path": "/service_management"}, {
+        {"id": 9, "title": "Schedules", "path": "/schedules"}, {
             "id": 10,
             "title": "Services",
             "path": "/services"

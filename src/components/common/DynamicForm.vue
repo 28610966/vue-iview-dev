@@ -10,7 +10,7 @@
                     <p v-if="field.secondaryTitle">{{field.secondaryTitle}}</p>
                 </div>
 
-                <Form-item :label="field.label" :prop="field.id">
+                <Form-item :label="$t('h.'+field.label)" :prop="field.id">
                     <input type="hidden" v-if="field.type === 'hidden'" v-model="formValidate[field.id]"/>
                     <Input v-if="field.type === 'input'"
                            v-model="formValidate[field.id]"

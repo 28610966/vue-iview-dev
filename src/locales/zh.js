@@ -3,6 +3,7 @@ export default {
         date:'YYYY-MM-DD',
         dateTime:'YYYY-MM-DD HH:mm:ss',
         time:'HH:mm:ss',
+        MD:'M月D日',
     },
     button: {
         add: "添加{msg}",
@@ -13,6 +14,11 @@ export default {
     },
     h: {
         Service: "服务",
+        Title: "标题",
+        AssignedTo:'分配给',
+        Status:'状态',
+        Description:'描述',
+        Urgency:'紧急',
         Incidents: "事件",
         Alerts: "警告",
         Configuration: "配置",

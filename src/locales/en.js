@@ -1,4 +1,10 @@
 export default {
+    date:{
+        date:'YYYY-MM-DD',
+        dateTime:'YYYY-MM-DD HH:mm:ss',
+        time:'HH:mm:ss',
+        MD:'D/M',
+    },
     button: {
         add: "Add {msg}",
         new: "New {msg}",

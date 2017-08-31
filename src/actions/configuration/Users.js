@@ -8,7 +8,7 @@ export default {
             method: 'get',
             url: (payload) => `/api/auth`,
             // format: (res) => {
-            //     return {data: res.data, loading: false, type: 'login'}
+            //     return {data1: res.data, loading: false, type: 'login'}
             // }
         },
         loginUser: {

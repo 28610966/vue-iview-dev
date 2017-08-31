@@ -60,8 +60,9 @@ function success(data) {
 function fail(err) {
     return {
         success: false,
-        errorMsg: err
-    }
+        errorMsg: err,
+        content: data,
+    };
 }
 
 function log() {

@@ -25,9 +25,4 @@ export default {
             url: (payload) => `/api/teams`,
         },
     },
-    state: {
-
-    },
-    // mutations: {},
-    // getters: {}
 }
