@@ -71,8 +71,9 @@
     </Row>
 </template>
 <script>
-    import {VueUtil, FormUtil} from '../../../../libs';
+    import {VueUtil, FormUtil} from '@util';
     import iView from 'iview';
+    import DropMenuDecorator from '@common/DropMenuDecorator.vue';
 
     export default {
         components: {

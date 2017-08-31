@@ -7,6 +7,7 @@ export default {
     Alerts : () => import('./alerts/Alerts'),
     Reports : () => import('./analytics/Reports'),
     Calendar : () => import('./configuration/schedules/Calendar'),
+    ScheduleInfomation : () => import('./configuration/schedules/ScheduleInfomation'),
     Schedules : () => import('./configuration/schedules/Schedules'),
     AddService : () => import('./configuration/services/AddService'),
     ServiceDetail : () => import('./configuration/services/ServiceDetail'),
